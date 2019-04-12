@@ -14,19 +14,22 @@ import java.util.stream.StreamSupport;
 @RestController
 public class WordBookController {
 
+    public static final String  saveWordPath = "save_word",
+                                getAllWordsPath = "all_words";
+
     @Autowired
     private WordsRepo wordsRepo;
 
-    @PostMapping(path = "save_word")
+    @PostMapping(path = saveWordPath)
     public @ResponseBody
-    void save_word(@RequestBody WordRecord wordRecord) {
+    void saveWord(@RequestBody WordRecord wordRecord) {
         wordsRepo.save(wordRecord);
-        System.out.println("There are " + wordsRepo.count() + " words");
+        Log.d("There are " + wordsRepo.count() + " words");
     }
 
-    @GetMapping("all_words")
+    @GetMapping(getAllWordsPath)
     public @ResponseBody
-    List<WordRecord> all_words() {
+    List<WordRecord> getAllWords() {
         System.out.println("There are " + wordsRepo.count() + " words");
         return StreamSupport.stream(wordsRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());

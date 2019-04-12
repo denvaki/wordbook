@@ -30,6 +30,38 @@ public class WordRecord {
     @Column(table = "words", nullable = false)
     private String foreign_word;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getForeign_word() {
+        return foreign_word;
+    }
+
+    public void setForeign_word(String foreign_word) {
+        this.foreign_word = foreign_word;
+    }
+
+    public String getTranslated_word() {
+        return translated_word;
+    }
+
+    public void setTranslated_word(String translated_word) {
+        this.translated_word = translated_word;
+    }
+
     @Column(table = "words", nullable = false)
     private String translated_word;
 }
