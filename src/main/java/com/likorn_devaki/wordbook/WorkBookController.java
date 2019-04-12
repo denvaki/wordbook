@@ -4,26 +4,33 @@ package com.likorn_devaki.wordbook;
 import com.likorn_devaki.wordbook.Entity.UserRepo;
 import com.likorn_devaki.wordbook.Entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-@Controller
 @RequestMapping
+@RestController
 public class WorkBookController {
 
     @Autowired
     private UserRepo userRepo;
 
     @PostMapping(path = "test")
-    public @ResponseBody String test(@RequestBody Users users){
+    public @ResponseBody
+    List<Users> test(@RequestBody Users users) {
         userRepo.save(users);
-        return userRepo.findAll().toString();
+
+        return StreamSupport.stream(userRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("greeting")
-    public @ResponseBody String greeting(){
+    public @ResponseBody
+    List<Users> greeting() {
 
-        return userRepo.findAll().toString();
+        return StreamSupport.stream(userRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 }
