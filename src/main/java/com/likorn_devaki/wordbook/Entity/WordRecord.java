@@ -27,8 +27,11 @@ public class WordRecord {
     @Column()
     private Integer user_id;
 
-    @Column(table = "words", nullable = false)
+    @Column(nullable = false)
     private String foreign_word;
+
+    @Column()
+    private String translated_word;
 
     public Integer getId() {
         return id;
@@ -62,6 +65,4 @@ public class WordRecord {
         this.translated_word = translated_word;
     }
 
-    @Column(table = "words", nullable = false)
-    private String translated_word;
 }

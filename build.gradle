@@ -36,6 +36,7 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.2.Final'
 
+
 	/*testImplementation 'org.springframework.boot:spring-boot-starter-test'*/
 	/*compile group: 'org.springframework',
 			name: 'spring-webmvc'*/

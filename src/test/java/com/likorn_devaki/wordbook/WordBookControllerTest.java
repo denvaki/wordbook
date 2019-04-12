@@ -1,5 +1,6 @@
 package com.likorn_devaki.wordbook;
 
+import com.likorn_devaki.wordbook.Entity.User;
 import com.likorn_devaki.wordbook.Entity.WordRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,20 @@ public class WordBookControllerTest {
     int port = 9090;
 
     @Test
-    public void saveWord() { }
+    public void saveWord() {
+        WordRecord testWord = new WordRecord(4, "kevad", "spring");
+        ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.saveWordPath, testWord, ResponseTransfer.class);
+        assertNotNull(responseTransfer);
+        assertNotNull(responseTransfer.getResponse());
+    }
+
+    @Test
+    public void addUser() {
+        User testUser = new User("monkey1893", "1234");
+        ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.addUserPath, testUser, ResponseTransfer.class);
+        assertNotNull(responseTransfer);
+        assertNotNull(responseTransfer.getResponse());
+    }
 
     @Test
     public void getAllWords() {
@@ -41,5 +55,18 @@ public class WordBookControllerTest {
         List<WordRecord> wordRecords = entity.getBody();
         assertNotNull(wordRecords);
         assertEquals("tere", wordRecords.get(0).getForeign_word());
+    }
+
+    @Test
+    public void getAllUsers() {
+        ResponseEntity<List<User>> entity = restTemplate.exchange(
+                "/" + WordBookController.getAllUsersPath,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>(){});
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+        List<User> users = entity.getBody();
+        assertNotNull(users);
+        assertEquals("paktalin", users.get(0).getUsername());
     }
 }
