@@ -56,12 +56,7 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWords() { // check that the request returns some words
-        ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
-                "/" + WordBookController.getAllWordsPath,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<WordRecord>>() {
-                });
+        ResponseEntity<List<WordRecord>> entity = getResponseEntityList("/" + WordBookController.getAllWordsPath);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<WordRecord> wordRecords = entity.getBody();
         assertNotNull(wordRecords);
@@ -70,12 +65,7 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllUsers() { // check that the request returns some users
-        ResponseEntity<List<User>> entity = restTemplate.exchange(
-                "/" + WordBookController.getAllUsersPath,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<User>>() {
-                });
+        ResponseEntity<List<User>> entity = getResponseEntityList("/" + WordBookController.getAllUsersPath);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<User> users = entity.getBody();
         assertNotNull(users);
@@ -84,18 +74,22 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWordsWhereUserId() { // check that the request returns some wordRecords for the selected user
-        // there is some data added for the user with user_id=4
+        // there is some data added for the user with user_id=4, so it must return some wordRecords
         String url = "/" + WordBookController.getAllWordsWhereUserIdPath + "?user_id=4";
+        ResponseEntity<List<WordRecord>> entity = getResponseEntityList(url);
 
-        ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<WordRecord>>() {
-                });
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<WordRecord> wordRecords = entity.getBody();
         assertNotNull(wordRecords);
         assertTrue(wordRecords.size() > 0);
+    }
+
+    private <T> ResponseEntity<List<T>> getResponseEntityList(String url) {
+        return restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<T>>() {
+                });
     }
 }
