@@ -28,9 +28,11 @@ public class WordRecord {
     @Column()
     private Integer user_id;
 
+    //TODO validate foreign_word
     @Column(nullable = false)
     private String foreign_word;
 
+    //TODO validate translated_word
     @Column()
     private String translated_word;
 }

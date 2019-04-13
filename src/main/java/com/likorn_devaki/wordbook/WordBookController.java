@@ -46,6 +46,7 @@ public class WordBookController {
     @PostMapping(path = createUser)
     @ResponseBody
     public ResponseTransfer addUser(@RequestBody User user) {
+        //TODO catch exception with user uniqueness
         usersRepo.save(user);
         return new ResponseTransfer(userCreatedSuccess);
     }

@@ -27,6 +27,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
+    //TODO encrypt password
     @Column(nullable = false)
     private String password;
 }
