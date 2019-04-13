@@ -1,15 +1,18 @@
 package com.likorn_devaki.wordbook;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+// wrapper for collecting responses
 @NoArgsConstructor
-@AllArgsConstructor
 public class ResponseTransfer {
 
     private String response;
 
-    public String getResponse() {
+    ResponseTransfer(String response) {
+        this.response = response;
+    }
+
+    String getResponse() {
         return response;
     }
 

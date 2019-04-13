@@ -1,10 +1,10 @@
 package com.likorn_devaki.wordbook;
 
 
-import com.likorn_devaki.wordbook.Entity.User;
-import com.likorn_devaki.wordbook.Entity.UsersRepo;
-import com.likorn_devaki.wordbook.Entity.WordsRepo;
-import com.likorn_devaki.wordbook.Entity.WordRecord;
+import com.likorn_devaki.wordbook.Entities.User;
+import com.likorn_devaki.wordbook.Entities.WordRecord;
+import com.likorn_devaki.wordbook.Repos.UsersRepo;
+import com.likorn_devaki.wordbook.Repos.WordsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +16,16 @@ import java.util.stream.StreamSupport;
 @RestController
 public class WordBookController {
 
-    static final String  saveWordPath = "save_word",
-                                getAllWordsPath = "all_words",
-                                addUserPath = "add_user",
-                                getAllUsersPath = "all_users";
+    static final String // paths to mappings
+            saveWordPath = "save_word",
+            getAllWordsPath = "all_words",
+            createUser = "create_user",
+            getAllUsersPath = "all_users",
+            getAllWordsWhereUserIdPath = "get_all_words_where_user_id";
+
+    static final String // response messages
+            wordSavedSuccess = "Congratulations! The word has been saved",
+            userCreatedSuccess = "Congratulations! The user has been created!";
 
     private final WordsRepo wordsRepo;
     private final UsersRepo usersRepo;
@@ -34,29 +40,35 @@ public class WordBookController {
     @ResponseBody
     public ResponseTransfer saveWord(@RequestBody WordRecord wordRecord) {
         wordsRepo.save(wordRecord);
-        return new ResponseTransfer("The word \"" + wordRecord.getForeign_word() + "\" has been successfully added");
+        return new ResponseTransfer(wordSavedSuccess);
     }
 
-    @PostMapping(path = addUserPath)
-    public @ResponseBody
-    ResponseTransfer addUser(@RequestBody User user) {
+    @PostMapping(path = createUser)
+    @ResponseBody
+    public ResponseTransfer addUser(@RequestBody User user) {
         usersRepo.save(user);
-        return new ResponseTransfer("The user \"" + user.getUsername() + "\" has been successfully added");
+        return new ResponseTransfer(userCreatedSuccess);
     }
 
-    @GetMapping(getAllWordsPath)
-    public @ResponseBody
-    List<WordRecord> getAllWords() {
+    @GetMapping(path = getAllWordsPath)
+    @ResponseBody
+    public List<WordRecord> getAllWords() {
         System.out.println("There are " + wordsRepo.count() + " words");
         return StreamSupport.stream(wordsRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(getAllUsersPath)
-    public @ResponseBody
-    List<User> getAllUsers() {
+    @GetMapping(path = getAllUsersPath)
+    @ResponseBody
+    public List<User> getAllUsers() {
         System.out.println("There are " + usersRepo.count() + " users");
         return StreamSupport.stream(usersRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = getAllWordsWhereUserIdPath)
+    @ResponseBody
+    public List<WordRecord> getAllWordsWhereUserId(@RequestParam String user_id) {
+        return wordsRepo.findAllByUser_id(Integer.parseInt(user_id));
     }
 }

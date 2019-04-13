@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.Entity;
+package com.likorn_devaki.wordbook.Entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column()
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column()
