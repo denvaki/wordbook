@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 
 // wrapper for collecting responses
 @NoArgsConstructor
-public class ResponseTransfer {
+class ResponseTransfer {
 
     private String response;
 
@@ -12,11 +12,8 @@ public class ResponseTransfer {
         this.response = response;
     }
 
-    String getResponse() {
+    @SuppressWarnings("WeakerAccess")
+    public String getResponse() {
         return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
     }
 }

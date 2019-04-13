@@ -30,7 +30,7 @@ public class WordBookControllerTest {
     @Test
     public void saveWord() { // check that a word is saved and produces a positive response
         //TODO add a word for the user only if the user with the specified id exists
-        WordRecord testWord = new WordRecord(4, "kevad", "spring");
+        WordRecord testWord = new WordRecord(4, "kolm", "three");
         ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.saveWordPath, testWord, ResponseTransfer.class);
         assertNotNull(responseTransfer);
         assertEquals(WordBookController.wordSavedSuccess, responseTransfer.getResponse());
@@ -38,7 +38,8 @@ public class WordBookControllerTest {
 
     @Test
     public void createUser() {
-        User newUser = new User("monkey1898", "1234");
+        // you need to update the username manually every time, otherwise th test won't pass as it won't be unique
+        User newUser = new User("monkey1902", "1234");
         validateUserWithUniqueUsernameCreated(newUser);
         validateUserWithExistingUsernameNotCreated(newUser);
     }
@@ -56,7 +57,12 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWords() { // check that the request returns some words
-        ResponseEntity<List<WordRecord>> entity = getResponseEntityList("/" + WordBookController.getAllWordsPath);
+        ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
+                "/" + WordBookController.getAllWordsPath,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<WordRecord>>() {
+                });
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<WordRecord> wordRecords = entity.getBody();
         assertNotNull(wordRecords);
@@ -65,7 +71,12 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllUsers() { // check that the request returns some users
-        ResponseEntity<List<User>> entity = getResponseEntityList("/" + WordBookController.getAllUsersPath);
+        ResponseEntity<List<User>> entity = restTemplate.exchange(
+                "/" + WordBookController.getAllUsersPath,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {
+                });
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<User> users = entity.getBody();
         assertNotNull(users);
@@ -74,22 +85,18 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWordsWhereUserId() { // check that the request returns some wordRecords for the selected user
-        // there is some data added for the user with user_id=4, so it must return some wordRecords
+        // there is some data added for the user with user_id=4
         String url = "/" + WordBookController.getAllWordsWhereUserIdPath + "?user_id=4";
-        ResponseEntity<List<WordRecord>> entity = getResponseEntityList(url);
 
+        ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<WordRecord>>() {
+                });
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<WordRecord> wordRecords = entity.getBody();
         assertNotNull(wordRecords);
         assertTrue(wordRecords.size() > 0);
-    }
-
-    private <T> ResponseEntity<List<T>> getResponseEntityList(String url) {
-        return restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<T>>() {
-                });
     }
 }

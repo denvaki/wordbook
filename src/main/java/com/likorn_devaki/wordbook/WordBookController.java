@@ -53,7 +53,6 @@ public class WordBookController {
     @GetMapping(path = getAllWordsPath)
     @ResponseBody
     public List<WordRecord> getAllWords() {
-        System.out.println("There are " + wordsRepo.count() + " words");
         return StreamSupport.stream(wordsRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
@@ -61,7 +60,6 @@ public class WordBookController {
     @GetMapping(path = getAllUsersPath)
     @ResponseBody
     public List<User> getAllUsers() {
-        System.out.println("There are " + usersRepo.count() + " users");
         return StreamSupport.stream(usersRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
