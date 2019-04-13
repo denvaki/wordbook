@@ -39,7 +39,7 @@ public class WordBookControllerTest {
     @Test
     public void createUser() {
         // you need to update the username manually every time, otherwise th test won't pass as it won't be unique
-        User newUser = new User("monkey1902", "1234");
+        User newUser = new User("monkey1903", "1234");
         validateUserWithUniqueUsernameCreated(newUser);
         validateUserWithExistingUsernameNotCreated(newUser);
     }
