@@ -1,30 +1,33 @@
-package com.likorn_devaki.wordbook.Entity;
+package com.likorn_devaki.wordbook.Entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Data
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+
+public class User {
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(unique = true, nullable = false)
     private String username;
 
+    //TODO encrypt password
     @Column(nullable = false)
     private String password;
-
 }
