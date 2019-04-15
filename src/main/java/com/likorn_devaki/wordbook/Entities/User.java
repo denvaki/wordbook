@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+
 public class User {
 
     public User(String username, String password) {
