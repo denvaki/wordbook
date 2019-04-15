@@ -6,7 +6,6 @@ import org.postgresql.util.ServerErrorMessage;
 
 public class UserExistException extends PSQLException {
 
-
     public UserExistException(String msg, PSQLState state, Throwable cause) {
         super(msg, state, cause);
     }

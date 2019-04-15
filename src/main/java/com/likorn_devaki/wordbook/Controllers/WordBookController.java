@@ -9,9 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RequestMapping
 @RestController
@@ -44,15 +43,13 @@ public class WordBookController {
     @GetMapping(path = "all_words")
     @ResponseBody
     public List<WordRecord> getAllWords() {
-        return StreamSupport.stream(wordsRepo.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return new ArrayList<>(wordsRepo.findAll());
     }
 
     @GetMapping(path = "all_users")
     @ResponseBody
     public List<User> getAllUsers() {
-        return StreamSupport.stream(usersRepo.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return new ArrayList<>(usersRepo.findAll());
     }
 
     @GetMapping(path = "all_words_where_user_id/{user_id}")

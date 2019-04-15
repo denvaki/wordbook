@@ -47,7 +47,7 @@ public class WordbookApplication {
         };
     }
 
-    static User getSampleUserWithNullId(int index) {
+    public static User getSampleUserWithNullId(int index) {
         User sampleUser = sampleUsers.get(index);
         sampleUser.setId(null);
         return sampleUser;
