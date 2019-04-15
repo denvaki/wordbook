@@ -30,4 +30,8 @@ public class User {
     //TODO encrypt password
     @Column(nullable = false)
     private String password;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

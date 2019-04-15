@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,30 +30,32 @@ public class WordBookControllerTest {
     @Test
     public void saveWord() { // check that a word is saved and produces a positive response
         //TODO add a word for the user only if the user with the specified id exists
-        WordRecord testWord = new WordRecord(4, "kolm", "three");
-        ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.SAVE_WORD_PATH, testWord, ResponseTransfer.class);
-        assertNotNull(responseTransfer);
-        assertEquals(WordBookController.SUCCESS_WORD_SAVED, responseTransfer.getResponse());
+        WordRecord wordRecord = new WordRecord(4, "kolm", "three");
+        ResponseEntity<WordRecord> responseEntity = restTemplate.postForEntity(
+                "/" + WordBookController.SAVE_WORD_PATH, wordRecord, WordRecord.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        WordRecord savedWordRecord = responseEntity.getBody();
+        assertNotNull(savedWordRecord);
     }
 
     @Test
-    public void createUser() {
-        // you need to update the username manually every time, otherwise th test won't pass as it won't be unique
-        User newUser = new User("monkey1916", "1234");
-        validateUserWithUniqueUsernameCreated(newUser);
-        validateUserWithExistingUsernameNotCreated(newUser);
+    public void userWithUniqueUsernameIsCreated() {
+        User user = new User("meow", "meow");
+        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
+                "/" + WordBookController.CREATE_USER_PATH, user, User.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        User createdUser = responseEntity.getBody();
+        assertNotNull(createdUser);
     }
 
-    private void validateUserWithUniqueUsernameCreated(User user) {
-        ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.CREATE_USER_PATH, user, ResponseTransfer.class);
-        assertNotNull(responseTransfer);
-        assertEquals(WordBookController.SUCCESS_USER_CREATED, responseTransfer.getResponse());
-    }
-
-    private void validateUserWithExistingUsernameNotCreated(User user) {
-        ResponseTransfer responseTransfer = restTemplate.postForObject("/" + WordBookController.CREATE_USER_PATH, user, ResponseTransfer.class);
-        assertNotNull(responseTransfer);
-        assertEquals(WordBookController.ERROR_USERNAME_NOT_UNIQUE, responseTransfer.getResponse());
+    @Test
+    public void userWithExistingUsernameNotCreated() {
+        User user = WordbookApplication.getSampleUserWithNullId(0);
+        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
+                "/" + WordBookController.CREATE_USER_PATH, user, User.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        User createdUser = responseEntity.getBody();
+        assertNull(createdUser);
     }
 
     @Test

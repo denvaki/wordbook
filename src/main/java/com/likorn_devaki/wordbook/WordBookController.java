@@ -24,11 +24,6 @@ public class WordBookController {
             ALL_USERS_PATH = "all_users",
             ALL_WORDS_WHERE_USER_ID = "all_words_where_user_id";
 
-    static final String // response messages
-            SUCCESS_WORD_SAVED = "Congratulations! The word has been saved",
-            SUCCESS_USER_CREATED = "Congratulations! The user has been created!",
-            ERROR_USERNAME_NOT_UNIQUE = "The username is not unique!";
-
     private final WordsRepo wordsRepo;
     private final UsersRepo usersRepo;
 
@@ -40,22 +35,19 @@ public class WordBookController {
 
     @PostMapping(path = SAVE_WORD_PATH)
     @ResponseBody
-    public ResponseTransfer saveWord(@RequestBody WordRecord wordRecord) {
-        wordsRepo.save(wordRecord);
-        return new ResponseTransfer(SUCCESS_WORD_SAVED);
+    public WordRecord saveWord(@RequestBody WordRecord wordRecord) {
+        return wordsRepo.save(wordRecord);
     }
 
     @PostMapping(path = CREATE_USER_PATH)
     @ResponseBody
-    public ResponseTransfer addUser(@RequestBody User user) {
-        ResponseTransfer responseTransfer;
+    public User createUser(@RequestBody User user) {
         try {
-            usersRepo.save(user);
-            responseTransfer = new ResponseTransfer(SUCCESS_USER_CREATED);
+            return usersRepo.save(user);
         } catch (DataIntegrityViolationException e) {
-            responseTransfer = new ResponseTransfer(ERROR_USERNAME_NOT_UNIQUE);
+            //TODO notify the user that the username is not unique
+            return null;
         }
-        return responseTransfer;
     }
 
     @GetMapping(path = ALL_WORDS_PATH)

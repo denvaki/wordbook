@@ -15,7 +15,7 @@ import java.util.List;
 @SpringBootApplication
 public class WordbookApplication {
 
-    private List<User> sampleUsers = Arrays.asList(
+    private static final List<User> sampleUsers = Arrays.asList(
             new User("devaki", "123"),
             new User("paktalin", "234"));
 
@@ -37,10 +37,15 @@ public class WordbookApplication {
 
     @Bean
     public CommandLineRunner initUsers(UsersRepo repository) {
-        return (args) -> repository.saveAll(sampleUsers);
+        return (args) -> {
+            repository.saveAll(sampleUsers);
+            System.out.println("All sample users saved");
+        };
     }
 
-    User getSampleUser(int index) {
-        return sampleUsers.get(index);
+    static User getSampleUserWithNullId(int index) {
+        User sampleUser = sampleUsers.get(index);
+        sampleUser.setId(null);
+        return sampleUser;
     }
 }
