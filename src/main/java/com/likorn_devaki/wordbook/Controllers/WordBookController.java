@@ -1,12 +1,12 @@
 package com.likorn_devaki.wordbook.Controllers;
 
 
-import com.likorn_devaki.wordbook.DataTransferObject.ResponseTransfer;
 import com.likorn_devaki.wordbook.Entities.User;
 import com.likorn_devaki.wordbook.Entities.WordRecord;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
 import com.likorn_devaki.wordbook.Repos.WordsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,42 +18,28 @@ import java.util.stream.StreamSupport;
 @RestController
 public class WordBookController {
 
-    /*static final String // paths to mappings
-            saveWordPath = "save_word",
-            getAllWordsPath = "all_words",
-            createUser = "create_user",
-            getAllUsersPath = "all_users",
-            getAllWordsWhereUserIdPath = "get_all_words_where_user_id";
-
-    static final String // response messages
-            wordSavedSuccess = "Congratulations! The word has been saved",
-            userCreatedSuccess = "Congratulations! The user has been created!";*/
-
     @Autowired
     private WordsRepo wordsRepo;
     @Autowired
     private UsersRepo usersRepo;
 
-    /*@Autowired
-    public WordBookController(WordsRepo wordsRepo, UsersRepo usersRepo) {
-        this.wordsRepo = wordsRepo;
-        this.usersRepo = usersRepo;
-    }*/
-
     @PostMapping(path = "save_word")
     @ResponseBody
-    public ResponseTransfer saveWord(@RequestBody WordRecord wordRecord) {
+    public WordRecord saveWord(@RequestBody WordRecord wordRecord) {
         wordRecord.setCreated(LocalDateTime.now().toString());
-        wordsRepo.save(wordRecord);
-        return new ResponseTransfer("The word has been saved");
+        return wordsRepo.save(wordRecord);
     }
 
     @PostMapping(path = "create_user")
     @ResponseBody
-    public ResponseTransfer addUser(@RequestBody User user) {
+    public User createUser(@RequestBody User user) {
         user.setCreated(LocalDateTime.now().toString());
-        usersRepo.save(user);
-        return new ResponseTransfer("The user has been created!");
+        try {
+            return usersRepo.save(user);
+        } catch (DataIntegrityViolationException e) {
+            //TODO notify the user that the username is not unique
+            return null;
+        }
     }
 
     @GetMapping(path = "all_words")
@@ -75,5 +61,4 @@ public class WordBookController {
     public List<WordRecord> getAllWordsByUserId(@PathVariable String user_id) {
         return wordsRepo.findAllByUser_id(Integer.parseInt(user_id));
     }
-
 }

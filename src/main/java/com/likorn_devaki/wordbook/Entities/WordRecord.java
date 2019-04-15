@@ -40,4 +40,8 @@ public class WordRecord {
 
     @Column
     private String deleted;
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
 }

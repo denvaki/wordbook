@@ -1,11 +1,9 @@
 package com.likorn_devaki.wordbook.Entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Data
@@ -30,6 +28,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Column(nullable = false)
     private String created;
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
 }
