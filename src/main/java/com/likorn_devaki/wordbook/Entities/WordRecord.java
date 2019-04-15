@@ -5,14 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @Data
 @Entity
 @Table(name = "words")
 @NoArgsConstructor
-@AllArgsConstructor
-
 public class WordRecord {
 
     public WordRecord(Integer user_id, String foreign_word, String translated_word) {
@@ -25,7 +24,7 @@ public class WordRecord {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column()
+    @Column(nullable = false)
     private Integer user_id;
 
     //TODO validate foreign_word
@@ -35,4 +34,10 @@ public class WordRecord {
     //TODO validate translated_word
     @Column()
     private String translated_word;
+
+    @Column(nullable = false)
+    private String created;
+
+    @Column
+    private String deleted;
 }

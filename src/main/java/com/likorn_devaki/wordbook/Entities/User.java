@@ -5,14 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Data
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
-
 public class User {
 
     public User(String username, String password) {
@@ -30,4 +29,7 @@ public class User {
     //TODO encrypt password
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String created;
 }
