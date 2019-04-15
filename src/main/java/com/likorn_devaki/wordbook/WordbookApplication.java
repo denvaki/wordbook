@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,14 +33,17 @@ public class WordbookApplication {
 
     @Bean
     public CommandLineRunner initWords(WordsRepo repository) {
+        String created = LocalDateTime.now().toString();
+        sampleWordRecords.forEach(w -> w.setCreated(created));
         return (args) -> repository.saveAll(sampleWordRecords);
     }
 
     @Bean
     public CommandLineRunner initUsers(UsersRepo repository) {
         return (args) -> {
+            String created = LocalDateTime.now().toString();
+            sampleUsers.forEach(u -> u.setCreated(created));
             repository.saveAll(sampleUsers);
-            System.out.println("All sample users saved");
         };
     }
 

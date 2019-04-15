@@ -22,12 +22,12 @@ import static org.junit.Assert.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class WordBookControllerTest {
 
-    private static final String // paths to mappings
-            saveWordPath = "save_word",
-            getAllWordsPath = "all_words",
-            createUser = "create_user",
-            getAllUsersPath = "all_users",
-            getWordsByUserIdPath = "get_all_words_where_user_id";
+    private static final String
+            SAVE_WORD_PATH = "save_word",
+            ALL_WORDS_PATH = "all_words",
+            CREATE_USER_PATH = "create_user",
+            ALL_USERS_PATH = "all_users",
+            ALL_WORDS_WHERE_USER_ID_PATH = "all_words_where_user_id";
 
     @LocalServerPort
     int port = 9090;
@@ -35,11 +35,11 @@ public class WordBookControllerTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void saveWord() { // check that a word is saved and produces a positive response
+    public void saveWord() {
         //TODO add a word for the user only if the user with the specified id exists
         WordRecord wordRecord = new WordRecord(1, "viis", "five");
         ResponseEntity<WordRecord> responseEntity = restTemplate.postForEntity(
-                "/" + saveWordPath, wordRecord, WordRecord.class);
+                "/" + SAVE_WORD_PATH, wordRecord, WordRecord.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         WordRecord savedWordRecord = responseEntity.getBody();
         assertNotNull(savedWordRecord);
@@ -49,7 +49,7 @@ public class WordBookControllerTest {
     public void userWithUniqueUsernameIsCreated() {
         User user = new User("meow", "meow");
         ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/" + createUser, user, User.class);
+                "/" + CREATE_USER_PATH, user, User.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         User createdUser = responseEntity.getBody();
         assertNotNull(createdUser);
@@ -59,16 +59,16 @@ public class WordBookControllerTest {
     public void userWithExistingUsernameNotCreated() {
         User user = WordbookApplication.getSampleUserWithNullId(0);
         ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/" + createUser, user, User.class);
+                "/" + CREATE_USER_PATH, user, User.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         User createdUser = responseEntity.getBody();
         assertNull(createdUser);
     }
 
     @Test
-    public void getAllWords() { // check that the request returns some words
+    public void getAllWords() {
         ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
-                "/" + getAllWordsPath,
+                "/" + ALL_WORDS_PATH,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<WordRecord>>() {
@@ -80,9 +80,9 @@ public class WordBookControllerTest {
     }
 
     @Test
-    public void getAllUsers() { // check that the request returns some users
+    public void getAllUsers() {
         ResponseEntity<List<User>> entity = restTemplate.exchange(
-                "/" + getAllUsersPath,
+                "/" + ALL_USERS_PATH,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<User>>() {
@@ -95,7 +95,7 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWordsWhereUserId() { // check that the request returns some wordRecords for the selected user
-        String url = "/" + getWordsByUserIdPath + "/1";
+        String url = "/" + ALL_WORDS_WHERE_USER_ID_PATH + "/1";
 
         ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
                 url,

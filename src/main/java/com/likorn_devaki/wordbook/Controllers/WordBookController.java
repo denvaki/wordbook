@@ -1,6 +1,5 @@
 package com.likorn_devaki.wordbook.Controllers;
 
-
 import com.likorn_devaki.wordbook.Entities.User;
 import com.likorn_devaki.wordbook.Entities.WordRecord;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
@@ -56,7 +55,7 @@ public class WordBookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "get_words_by_user_id/{user_id}")
+    @GetMapping(path = "all_words_where_user_id/{user_id}")
     @ResponseBody
     public List<WordRecord> getAllWordsByUserId(@PathVariable String user_id) {
         return wordsRepo.findAllByUser_id(Integer.parseInt(user_id));
