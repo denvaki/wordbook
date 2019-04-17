@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,8 @@ public class WordBookControllerTest {
             ALL_WORDS_PATH = "all_words",
             CREATE_USER_PATH = "create_user",
             ALL_USERS_PATH = "all_users",
-            ALL_WORDS_WHERE_USER_ID_PATH = "all_words_where_user_id";
+            ALL_WORDS_WHERE_USER_ID_PATH = "all_words_where_user_id",
+            UPDATE_WORD_PATH = "update_word";
 
     @LocalServerPort
     int port = 9090;
@@ -96,10 +98,8 @@ public class WordBookControllerTest {
 
     @Test
     public void getAllWordsWhereUserId() { // check that the request returns some wordRecords for the selected user
-        String url = "/" + ALL_WORDS_WHERE_USER_ID_PATH + "/1";
-
         ResponseEntity<List<WordRecord>> entity = restTemplate.exchange(
-                url,
+                "/" + ALL_WORDS_WHERE_USER_ID_PATH + "/1",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<WordRecord>>() {
@@ -109,4 +109,29 @@ public class WordBookControllerTest {
         assertNotNull(wordRecords);
         assertTrue(wordRecords.size() > 0);
     }
+
+    @Test
+    public void updateWord() {
+        // save a word
+        WordRecord wordRecord = new WordRecord(1, "kus", "six");
+        ResponseEntity<WordRecord> responseEntity = restTemplate.postForEntity(
+                "/" + SAVE_WORD_PATH, wordRecord, WordRecord.class);
+        WordRecord savedWordRecord = responseEntity.getBody();
+
+        // update word
+        if (savedWordRecord != null) {
+            savedWordRecord.setForeign_word("kuus");
+
+            // update the word
+            HttpEntity httpEntity = new HttpEntity<>(savedWordRecord);
+            responseEntity = restTemplate.exchange(
+                    "/" + UPDATE_WORD_PATH + "/" + savedWordRecord.getId(),
+                    HttpMethod.PUT,
+                    httpEntity,
+                    WordRecord.class);
+            WordRecord updatedWordRecord = responseEntity.getBody();
+            assertEquals(savedWordRecord, updatedWordRecord);
+        }
+    }
+
 }

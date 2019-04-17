@@ -57,4 +57,11 @@ public class WordBookController {
     public List<WordRecord> getAllWordsByUserId(@PathVariable String user_id) {
         return wordsRepo.findAllByUser_id(Integer.parseInt(user_id));
     }
+
+    @PutMapping(path = "update_word/{word_id}")
+    @ResponseBody
+    public WordRecord updateWord(@PathVariable Integer word_id, @RequestBody WordRecord wordRecord) {
+        wordRecord.setId(word_id);
+        return wordsRepo.save(wordRecord);
+    }
 }

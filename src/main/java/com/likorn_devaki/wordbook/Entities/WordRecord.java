@@ -1,6 +1,5 @@
 package com.likorn_devaki.wordbook.Entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -42,5 +41,21 @@ public class WordRecord {
 
     public void setCreated(String created) {
         this.created = created;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setForeign_word(String foreign_word) {
+        this.foreign_word = foreign_word;
+    }
+
+    public void setTranslated_word(String translated_word) {
+        this.translated_word = translated_word;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
