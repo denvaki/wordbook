@@ -36,9 +36,6 @@ public class WordRecord {
     @Column(nullable = false)
     private String created;
 
-    @Column
-    private String deleted;
-
     public void setCreated(String created) {
         this.created = created;
     }
