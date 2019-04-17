@@ -20,7 +20,7 @@ public class WordbookApplication {
             new User("devaki", "123"),
             new User("paktalin", "234"));
 
-    private List<WordRecord> sampleWordRecords = Arrays.asList(
+    private static final List<WordRecord> sampleWordRecords = Arrays.asList(
             new WordRecord(0, "kaks", "two"),
             new WordRecord(0, "kolm", "three"),
             new WordRecord(0, "neli", "four"),
@@ -51,5 +51,9 @@ public class WordbookApplication {
         User sampleUser = sampleUsers.get(index);
         sampleUser.setId(null);
         return sampleUser;
+    }
+
+    public static WordRecord getSampleWord(int index) {
+        return sampleWordRecords.get(index);
     }
 }

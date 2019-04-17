@@ -64,4 +64,10 @@ public class WordBookController {
         wordRecord.setId(word_id);
         return wordsRepo.save(wordRecord);
     }
+
+    @DeleteMapping(path = "delete_word/{word_id}")
+    @ResponseBody
+    public void deleteWord(@PathVariable Integer word_id) {
+        wordsRepo.deleteById(word_id);
+    }
 }

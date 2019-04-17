@@ -30,7 +30,8 @@ public class WordBookControllerTest {
             CREATE_USER_PATH = "create_user",
             ALL_USERS_PATH = "all_users",
             ALL_WORDS_WHERE_USER_ID_PATH = "all_words_where_user_id",
-            UPDATE_WORD_PATH = "update_word";
+            UPDATE_WORD_PATH = "update_word",
+            DELETE_WORD_PATH = "delete_word";
 
     @LocalServerPort
     int port = 9090;
@@ -129,9 +130,21 @@ public class WordBookControllerTest {
                     HttpMethod.PUT,
                     httpEntity,
                     WordRecord.class);
+            assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
             WordRecord updatedWordRecord = responseEntity.getBody();
             assertEquals(savedWordRecord, updatedWordRecord);
         }
     }
 
+    @Test
+    public void deleteWord() {
+        Integer wordRecordId = WordbookApplication.getSampleWord(0).getId();
+        ResponseEntity<WordRecord> responseEntity = restTemplate.exchange(
+                "/" + DELETE_WORD_PATH + "/" + wordRecordId,
+                HttpMethod.DELETE,
+                null,
+                WordRecord.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
 }
