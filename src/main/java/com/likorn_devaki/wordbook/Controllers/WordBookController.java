@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class WordBookController {
     @Autowired
     private UsersRepo usersRepo;
 
+    //@Transactional
     @PostMapping(path = "save_word")
     @ResponseBody
     public WordRecord saveWord(@RequestBody WordRecord wordRecord) {
@@ -56,7 +58,7 @@ public class WordBookController {
     @GetMapping(path = "all_words_where_user_id/{user_id}")
     @ResponseBody
     public List<WordRecord> getAllWordsByUserId(@PathVariable String user_id) {
-        return wordsRepo.findAllByUser_id(Integer.parseInt(user_id));
+        return wordsRepo.findAllByUserId(Integer.parseInt(user_id));
     }
 
     @PutMapping(path = "update_word/{word_id}")

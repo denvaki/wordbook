@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface WordsRepo extends JpaRepository<WordRecord, Integer> {
 
-    @Query("SELECT w FROM WordRecord w WHERE w.user_id = ?1")
-    List<WordRecord> findAllByUser_id(Integer userId);
+    /*@Query("SELECT w FROM WordRecord w WHERE w.user_id = ?1")
+    List<WordRecord> findAllByUser_id(Integer userId);*/
 
+    List<WordRecord>findAllByUserId(Integer userId);
 }
