@@ -36,23 +36,4 @@ public class WordRecord {
     @Column(nullable = false)
     private String created;
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setForeign_word(String foreign_word) {
-        this.foreignWord = foreign_word;
-    }
-
-    public void setTranslated_word(String translated_word) {
-        this.translatedWord = translated_word;
-    }
-
-    public Integer getId() {
-        return id;
-    }
 }

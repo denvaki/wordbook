@@ -41,8 +41,8 @@ public class WordbookApplication {
     @Bean
     public CommandLineRunner initUsers(UsersRepo repository) {
         return (args) -> {
-            String created = LocalDateTime.now().toString();
-            sampleUsers.forEach(u -> u.setCreated(created));
+
+            sampleUsers.forEach(u -> u.setCreated(LocalDateTime.now()));
             repository.saveAll(sampleUsers);
         };
     }
