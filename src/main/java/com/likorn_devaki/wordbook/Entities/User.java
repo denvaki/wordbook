@@ -2,12 +2,10 @@ package com.likorn_devaki.wordbook.Entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Data
@@ -39,5 +37,31 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime created;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
 }
