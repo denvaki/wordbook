@@ -1,5 +1,6 @@
 package com.likorn_devaki.wordbook.Controllers;
 
+import com.likorn_devaki.wordbook.Entities.Token;
 import com.likorn_devaki.wordbook.Entities.User;
 import com.likorn_devaki.wordbook.PasswordEncoder.PasswordEncoder;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
@@ -33,6 +34,14 @@ public class UsersController {
         usersRepo.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
+    }
+
+    @PostMapping(path = "login")
+    public Token loginUser(@RequestBody User user) {
+        User dbUser = usersRepo.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+        if (dbUser != null)
+            return new Token(user);
+        return  null;
     }
 
     @GetMapping(path = "all_users")
