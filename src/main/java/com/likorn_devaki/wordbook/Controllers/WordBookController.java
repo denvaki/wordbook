@@ -1,22 +1,23 @@
 package com.likorn_devaki.wordbook.Controllers;
 
+import com.likorn_devaki.wordbook.DTO.UserCredentials;
 import com.likorn_devaki.wordbook.Entities.User;
 import com.likorn_devaki.wordbook.Entities.WordRecord;
 import com.likorn_devaki.wordbook.PasswordEncoder.PasswordEncoder;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
 import com.likorn_devaki.wordbook.Repos.WordsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import com.likorn_devaki.wordbook.DTO.UserCredentials;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping
@@ -76,4 +77,15 @@ public class WordBookController {
     public void deleteWord(@PathVariable Integer word_id) {
         wordsRepo.deleteById(word_id);
     }
+
+    @PostMapping("login")
+    ResponseEntity login(@RequestBody UserCredentials credentials) {
+        return Optional.of(authManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.username, credentials.password)))
+                .map(auth -> (UserPrincipal) auth.getPrincipal())
+                .map(UserPrincipal::getUser)
+                .map(user -> jwtTokenProvider.createToken(credentials.username, user.getRoles()))
+                .map(token -> ok(UserToken.of(credentials.username, token)))
+                .orElseThrow(() -> new BadCredentialsException("Authentication failed"));
+    }
+
 }

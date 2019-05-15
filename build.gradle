@@ -39,6 +39,11 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-orm', version: '5.0.6.RELEASE'
 	/*compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.6.RELEASE'*/
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.6.RELEASE'
+	compile group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.6'
+	runtime group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.6'
+	runtime group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.10.6'
+
+
 
 
 	/*testImplementation 'org.springframework.boot:spring-boot-starter-test'*/
