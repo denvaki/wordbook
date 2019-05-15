@@ -23,6 +23,7 @@ public class UsersController {
 
     @PostMapping(path = "register")
     public ResponseEntity createUser(@RequestBody User user) {
+        System.out.println("registering a new user");
         if(user.getUsername() ==  null || user.getPassword() == null){
             return ResponseEntity.badRequest().body("Empty one or both of credentials fields");
         }
