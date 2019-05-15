@@ -21,14 +21,14 @@ class Tag {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    private Integer userId;
-
     @Column()
     private String description;
 
     @Column()
     private Color color;
+
+    @ManyToOne
+    private User user;
 
     @ManyToMany()
     private List<Word> words;

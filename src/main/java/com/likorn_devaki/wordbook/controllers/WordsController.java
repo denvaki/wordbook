@@ -26,9 +26,11 @@ public class WordsController {
     }
 
     @GetMapping(path = "all_words")
-    public List<Word> getAll() {
-        // TODO use @RequestParam
-        return wordsService.getAll();
+    public List<Word> findAll(
+            @RequestParam(value = "foreign_word", required = false) String foreignWord,
+            @RequestParam(value = "translated_word", required = false) String translatedWord,
+            @RequestParam(value = "tag", required = false) String tag) {
+        return wordsService.findAll(foreignWord, translatedWord, tag);
     }
 
     @PutMapping(path = "update_word/{word_id}")

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @Data
 @Entity
 @Table(name = "words")

@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 @Data
 @Entity
 @Table(name = "users")
@@ -31,5 +31,8 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime created;
+
+    @OneToMany(mappedBy = "user")
+    private List<Tag> tags;
 
 }
