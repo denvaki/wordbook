@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook;
+package com.likorn_devaki.wordbook.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
