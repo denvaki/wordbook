@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 //@Component
-public class PasswordEncoder {
+public class PasswordEncoder2 {
 
     public static String encode(CharSequence rawPassword) {
 
