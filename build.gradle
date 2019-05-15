@@ -32,6 +32,8 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testCompile("junit:junit")
 	runtimeOnly 'org.postgresql:postgresql'
+	compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.1.5.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.1.5.RELEASE'
 	compile group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.2.Final'
