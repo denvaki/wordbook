@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -38,11 +39,11 @@ public class UsersController {
     }
 
     @PostMapping(path = "login")
-    public Token loginUser(@RequestBody User user) {
-        User dbUser = usersRepo.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-        if (dbUser != null)
-            return new Token(user);
-        return  null;
+    ResponseEntity loginUser(@RequestBody User user) {
+        User dbUser = usersRepo.findUserByUsername(user.getUsername());
+        if (dbUser != null && PasswordEncoder2.match(dbUser.getPassword(), user.getPassword()))
+            return ResponseEntity.ok(new Token(user));
+        return  ResponseEntity.badRequest().body("Bad credentials");
     }
 
     @GetMapping(path = "all_users")
