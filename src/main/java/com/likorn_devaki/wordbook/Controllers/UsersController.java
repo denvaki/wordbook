@@ -2,7 +2,7 @@ package com.likorn_devaki.wordbook.Controllers;
 
 import com.likorn_devaki.wordbook.Entities.Token;
 import com.likorn_devaki.wordbook.Entities.User;
-import com.likorn_devaki.wordbook.PasswordEncoder.PasswordEncoder;
+import com.likorn_devaki.wordbook.PasswordEncoder.PasswordEncoder2;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class UsersController {
         if (usersRepo.existsByUsername(user.getUsername())){
             return ResponseEntity.badRequest().body(String.format("Username %s already exist",  user.getUsername()));
         }
-        user.setPassword(PasswordEncoder.encode(user.getPassword()));
+        user.setPassword(PasswordEncoder2.encode(user.getPassword()));
         usersRepo.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
