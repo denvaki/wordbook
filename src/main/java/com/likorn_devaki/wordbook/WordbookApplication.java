@@ -2,8 +2,8 @@ package com.likorn_devaki.wordbook;
 
 import com.likorn_devaki.wordbook.entities.User;
 import com.likorn_devaki.wordbook.entities.Word;
-import com.likorn_devaki.wordbook.Repos.UsersRepo;
-import com.likorn_devaki.wordbook.Repos.WordsRepo;
+import com.likorn_devaki.wordbook.repos.UsersRepository;
+import com.likorn_devaki.wordbook.repos.WordsRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,14 +32,14 @@ public class WordbookApplication {
     }
 
     @Bean
-    public CommandLineRunner initWords(WordsRepo repository) {
+    public CommandLineRunner initWords(WordsRepository repository) {
         String created = LocalDateTime.now().toString();
         SAMPLE_WORDS.forEach(w -> w.setCreated(created));
         return (args) -> repository.saveAll(SAMPLE_WORDS);
     }
 
     @Bean
-    public CommandLineRunner initUsers(UsersRepo repository) {
+    public CommandLineRunner initUsers(UsersRepository repository) {
         return (args) -> {
             sampleUsers.forEach(u -> u.setCreated(LocalDateTime.now()));
             repository.saveAll(sampleUsers);
