@@ -1,9 +1,10 @@
-package com.likorn_devaki.wordbook.entities;
+package com.likorn_devaki.wordbook.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @Data
@@ -29,13 +30,12 @@ public class Word {
     @Column(nullable = false)
     private String foreignWord;
 
-    //TODO validate translated_word
-    @Column()
+    @Column(nullable = false)
     private String translatedWord;
 
     @Column(nullable = false)
     private String created;
 
-    @Column()
-    private Tag tag;
+    @ManyToMany(mappedBy = "words")
+    private List<Tag> tags;
 }

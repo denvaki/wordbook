@@ -1,7 +1,7 @@
 package com.likorn_devaki.wordbook;
 
-import com.likorn_devaki.wordbook.entities.User;
-import com.likorn_devaki.wordbook.entities.Word;
+import com.likorn_devaki.wordbook.model.User;
+import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.repos.UsersRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
 import org.springframework.boot.CommandLineRunner;

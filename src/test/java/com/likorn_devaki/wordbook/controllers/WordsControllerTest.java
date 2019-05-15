@@ -1,7 +1,7 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.entities.User;
-import com.likorn_devaki.wordbook.entities.Word;
+import com.likorn_devaki.wordbook.model.User;
+import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.WordbookApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;

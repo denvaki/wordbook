@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.entities;
+package com.likorn_devaki.wordbook.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

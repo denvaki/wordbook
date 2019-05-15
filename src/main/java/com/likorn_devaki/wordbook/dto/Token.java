@@ -1,6 +1,6 @@
 package com.likorn_devaki.wordbook.dto;
 
-import com.likorn_devaki.wordbook.entities.User;
+import com.likorn_devaki.wordbook.model.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;

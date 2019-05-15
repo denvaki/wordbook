@@ -1,13 +1,10 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.entities.Word;
-import com.likorn_devaki.wordbook.repos.WordsRepository;
+import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.service.WordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -21,6 +18,11 @@ public class WordsController {
     @PostMapping(path = "save_word")
     public Word save(@RequestBody Word word){
         return wordsService.save(word);
+    }
+
+    @GetMapping("{id}")
+    public Word findOne(@PathVariable Integer id) {
+        return wordsService.findOne(id);
     }
 
     @GetMapping(path = "all_words")

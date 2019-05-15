@@ -1,10 +1,12 @@
-package com.likorn_devaki.wordbook.entities;
+package com.likorn_devaki.wordbook.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.util.List;
+
 
 @Data
 @Entity
@@ -19,9 +21,15 @@ class Tag {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private Integer userId;
+
     @Column()
     private String description;
 
     @Column()
     private Color color;
+
+    @ManyToMany()
+    private List<Word> words;
 }

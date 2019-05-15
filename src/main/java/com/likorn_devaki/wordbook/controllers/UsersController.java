@@ -1,7 +1,7 @@
 package com.likorn_devaki.wordbook.controllers;
 
 import com.likorn_devaki.wordbook.dto.Token;
-import com.likorn_devaki.wordbook.entities.User;
+import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.security.PasswordEncoder2;
 import com.likorn_devaki.wordbook.repos.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
