@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.DTO;
+package com.likorn_devaki.wordbook.dto;
 
 import lombok.Data;
 

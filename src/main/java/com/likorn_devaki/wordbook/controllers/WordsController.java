@@ -1,6 +1,6 @@
-package com.likorn_devaki.wordbook.Controllers;
+package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.Entities.WordRecord;
+import com.likorn_devaki.wordbook.entities.Word;
 import com.likorn_devaki.wordbook.Repos.WordsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,26 +19,26 @@ public class WordsController {
 
     //@Transactional
     @PostMapping(path = "save_word")
-    public WordRecord saveWord(@RequestBody WordRecord wordRecord){
-        wordRecord.setCreated(LocalDateTime.now().toString());
-        return wordsRepo.save(wordRecord);
+    public Word saveWord(@RequestBody Word word){
+        word.setCreated(LocalDateTime.now().toString());
+        return wordsRepo.save(word);
     }
 
     @GetMapping(path = "all_words")
-    public List<WordRecord> getAllWords() {
+    public List<Word> getAllWords() {
         System.out.println(new ArrayList<>(wordsRepo.findAll()));
         return new ArrayList<>(wordsRepo.findAll());
     }
 
     @GetMapping(path = "all_words_where_user_id/{user_id}")
-    public List<WordRecord> getAllWordsByUserId(@PathVariable String user_id) {
+    public List<Word> getAllWordsByUserId(@PathVariable String user_id) {
         return wordsRepo.findAllByUserId(Integer.parseInt(user_id));
     }
 
     @PutMapping(path = "update_word/{word_id}")
-    public WordRecord updateWord(@PathVariable Integer word_id, @RequestBody WordRecord wordRecord) {
-        wordRecord.setId(word_id);
-        return wordsRepo.save(wordRecord);
+    public Word updateWord(@PathVariable Integer word_id, @RequestBody Word word) {
+        word.setId(word_id);
+        return wordsRepo.save(word);
     }
 
     @DeleteMapping(path = "delete_word/{word_id}")

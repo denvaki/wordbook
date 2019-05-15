@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.Entities;
+package com.likorn_devaki.wordbook.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "words")
 @NoArgsConstructor
-public class WordRecord {
+public class Word {
 
-    public WordRecord(Integer user_id, String foreign_word, String translated_word) {
+    public Word(Integer user_id, String foreign_word, String translated_word) {
         this.userId = user_id;
         this.foreignWord = foreign_word;
         this.translatedWord = translated_word;
@@ -37,5 +37,5 @@ public class WordRecord {
     private String created;
 
     @Column()
-    private String tag;
+    private Tag tag;
 }

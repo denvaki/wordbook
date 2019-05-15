@@ -1,8 +1,8 @@
-package com.likorn_devaki.wordbook.Controllers;
+package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.Entities.Token;
-import com.likorn_devaki.wordbook.Entities.User;
-import com.likorn_devaki.wordbook.PasswordEncoder.PasswordEncoder2;
+import com.likorn_devaki.wordbook.dto.Token;
+import com.likorn_devaki.wordbook.entities.User;
+import com.likorn_devaki.wordbook.security.PasswordEncoder2;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,7 +38,7 @@ public class UsersController {
     }
 
     @PostMapping(path = "login")
-    ResponseEntity loginUser(@RequestBody User user) {
+    public ResponseEntity loginUser(@RequestBody User user) {
         User dbUser = usersRepo.findUserByUsername(user.getUsername());
         if (dbUser != null && PasswordEncoder2.match(dbUser.getPassword(), user.getPassword()))
             return ResponseEntity.ok(new Token(user));

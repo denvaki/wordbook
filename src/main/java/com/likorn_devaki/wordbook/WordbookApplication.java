@@ -1,7 +1,7 @@
 package com.likorn_devaki.wordbook;
 
-import com.likorn_devaki.wordbook.Entities.User;
-import com.likorn_devaki.wordbook.Entities.WordRecord;
+import com.likorn_devaki.wordbook.entities.User;
+import com.likorn_devaki.wordbook.entities.Word;
 import com.likorn_devaki.wordbook.Repos.UsersRepo;
 import com.likorn_devaki.wordbook.Repos.WordsRepo;
 import org.springframework.boot.CommandLineRunner;
@@ -20,12 +20,12 @@ public class WordbookApplication {
             new User("devaki", "123"),
             new User("paktalin", "234"));
 
-    private static final List<WordRecord> sampleWordRecords = Arrays.asList(
-            new WordRecord(0, "kaks", "two"),
-            new WordRecord(0, "kolm", "three"),
-            new WordRecord(0, "neli", "four"),
-            new WordRecord(1, "tere", "hello"),
-            new WordRecord(1, "head aega", "goodbye"));
+    private static final List<Word> SAMPLE_WORDS = Arrays.asList(
+            new Word(0, "kaks", "two"),
+            new Word(0, "kolm", "three"),
+            new Word(0, "neli", "four"),
+            new Word(1, "tere", "hello"),
+            new Word(1, "head aega", "goodbye"));
 
     public static void main(String[] args) {
         SpringApplication.run(WordbookApplication.class, args);
@@ -34,14 +34,13 @@ public class WordbookApplication {
     @Bean
     public CommandLineRunner initWords(WordsRepo repository) {
         String created = LocalDateTime.now().toString();
-        sampleWordRecords.forEach(w -> w.setCreated(created));
-        return (args) -> repository.saveAll(sampleWordRecords);
+        SAMPLE_WORDS.forEach(w -> w.setCreated(created));
+        return (args) -> repository.saveAll(SAMPLE_WORDS);
     }
 
     @Bean
     public CommandLineRunner initUsers(UsersRepo repository) {
         return (args) -> {
-
             sampleUsers.forEach(u -> u.setCreated(LocalDateTime.now()));
             repository.saveAll(sampleUsers);
         };
@@ -53,7 +52,7 @@ public class WordbookApplication {
         return sampleUser;
     }
 
-    public static WordRecord getSampleWord(int index) {
-        return sampleWordRecords.get(index);
+    public static Word getSampleWord(int index) {
+        return SAMPLE_WORDS.get(index);
     }
 }

@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.Controllers;
+package com.likorn_devaki.wordbook.controllers;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,4 +1,4 @@
-package com.likorn_devaki.wordbook.Exception;
+package com.likorn_devaki.wordbook.exceptions;
 
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.PSQLState;
