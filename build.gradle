@@ -41,4 +41,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testCompile("junit:junit")
 	runtimeOnly 'org.postgresql:postgresql'
+	compile group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.6'
+	runtime group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.6'
+	runtime group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.10.6'
 }
