@@ -22,16 +22,12 @@ public class WordsService {
     @Autowired
     private WordsRepository wordsRepository;
 
-    @Autowired
-    private UsersRepository usersRepository;
-
     public Word save(Word word, HttpServletRequest request) {
         String token = extractToken(request);
         if (token == null)
             return null;
         word.setCreated(LocalDateTime.now().toString());
-        Integer userId = usersRepository.findUserByUsername(JWTProvider.getUsername(token)).getId();
-        word.setUserId(userId);
+        word.setUserId(JWTProvider.getUserId(token));
         return wordsRepository.save(word);
     }
 
@@ -48,8 +44,7 @@ public class WordsService {
         String token = extractToken(request);
         if (token == null)
             return ResponseEntity.badRequest().body("Bad credentials");
-        // TODO pack userId into the token instead of username
-        Integer userId = usersRepository.findUserByUsername(JWTProvider.getUsername(token)).getId();
+        Integer userId = JWTProvider.getUserId(token);
         if (isNotBlank(foreignWord) || isNotBlank(translatedWord) || isNotBlank(tag))
             return ResponseEntity.ok(wordsRepository.findWordsByParams(foreignWord, translatedWord, tag, userId));
         return ResponseEntity.ok(wordsRepository.findWordsByUserId(userId));

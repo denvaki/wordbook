@@ -19,17 +19,17 @@ public class JWTProvider {
             secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    public static String createJWT(String username) {
+    public static String createJWT(Integer userId) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
-                .setSubject(username)
+                .setSubject(String.valueOf(userId))
                 .setExpiration(new Date(new Date().getTime() + 3600000))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public static String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    public static Integer getUserId(String token) {
+        return Integer.parseInt(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
     }
 
     public static Optional<String> resolveToken(HttpServletRequest req) {
