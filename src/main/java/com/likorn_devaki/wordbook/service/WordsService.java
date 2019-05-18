@@ -35,8 +35,7 @@ public class WordsService {
         if (isNotBlank(foreignWord) || isNotBlank(translatedWord) || isNotBlank(tag)) {
             return wordsRepository.findWordsByParams(foreignWord, translatedWord, tag);
         }
-        return new ArrayList<>(wordsRepository.
-                findWordsByUserId(usersRepository.findUserByUsername(username).getUsername()));
+        return new ArrayList<>(wordsRepository.findWordsByUserId(usersRepository.findUserByUsername(username).getUsername()));
     }
 
     public Word update(Integer word_id, Word word) {

@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping
 @RestController
-public class WordsController {
+public class WordController {
 
     @Autowired
     private WordsService wordsService;
@@ -37,22 +36,20 @@ public class WordsController {
             HttpServletRequest req) {
         JWTProvider jwtProvider = new JWTProvider();
         String token = jwtProvider.resolveToken(req).toString();
-        if (!jwtProvider.validateToken(token)){
+        if (jwtProvider.invalidToken(token)){
             return ResponseEntity.badRequest().body("Bad credentials");
         }
-
-
         List<Word> usersWords = wordsService.findAllByUsername(foreignWord, translatedWord, tag, jwtProvider.getUsername(token));
         return ResponseEntity.ok(usersWords);
     }
 
-    @PutMapping(path = "update_word/{word_id}")
-    public Word update(@PathVariable Integer word_id, @RequestBody Word word) {
-        return wordsService.update(word_id, word);
+    @PutMapping(path = "update_word")
+    public Word update(@RequestParam(value = "word_id") Integer wordId, @RequestBody Word word) {
+        return wordsService.update(wordId, word);
     }
 
-    @DeleteMapping(path = "delete_word/{word_id}")
-    public void delete(@PathVariable Integer word_id) {
-        wordsService.delete(word_id);
+    @DeleteMapping(path = "delete_word")
+    public void delete(@RequestParam(value = "word_id") Integer wordId) {
+        wordsService.delete(wordId);
     }
 }

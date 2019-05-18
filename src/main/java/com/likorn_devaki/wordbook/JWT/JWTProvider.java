@@ -28,7 +28,6 @@ public class JWTProvider {
                 .setExpiration(new Date(new Date().getTime() + 3600000))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
-
     }
 
     public String getUsername(String token) {
@@ -41,14 +40,13 @@ public class JWTProvider {
                 .map(header -> header.substring(7));
     }
 
-    public boolean validateToken(String token) {
+    public boolean invalidToken(String token) {
         System.out.println(secretKey);
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         try {
-
-            return !claims.getBody().getExpiration().before(new Date());
+            return claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            return true;
         }
     }
 }

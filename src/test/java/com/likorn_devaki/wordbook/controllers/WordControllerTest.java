@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class WordsControllerTest {
+public class WordControllerTest {
 
     private static final String
             SAVE_WORD_PATH = "save_word",
