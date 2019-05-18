@@ -21,7 +21,6 @@ public class JWTProvider {
     }
 
     public String createJWT(String username) {
-
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setSubject(username)

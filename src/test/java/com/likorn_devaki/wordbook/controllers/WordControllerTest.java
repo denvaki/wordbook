@@ -41,12 +41,14 @@ public class WordControllerTest {
 
     @Test
     public void getAllWords() {
+        // TODO generate sample token
+        String token = "";
+        // TODO pass the token to the url
         ResponseEntity<List<Word>> entity = restTemplate.exchange(
                 "/all_words",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Word>>() {
-                });
+                new ParameterizedTypeReference<List<Word>>() {});
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<Word> words = entity.getBody();
         assertNotNull(words);
@@ -54,49 +56,25 @@ public class WordControllerTest {
     }
 
     @Test
-    public void getAllWordsWhereUserId() { // check that the request returns some words for the selected user
-        ResponseEntity<List<Word>> entity = restTemplate.exchange(
-                "/all_words_where_user_id/1",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Word>>() {
-                });
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        List<Word> words = entity.getBody();
-        assertNotNull(words);
-        assertTrue(words.size() > 0);
-    }
-
-    @Test
     public void updateWord() {
-        // save a word
-        Word word = new Word(1, "kus", "six");
-        ResponseEntity<Word> responseEntity = restTemplate.postForEntity(
-                "/save_word", word, Word.class);
-        Word savedWord = responseEntity.getBody();
-
-        // update word
-        if (savedWord != null) {
-            savedWord.setForeignWord("kuus");
-
-            // update the word
-            HttpEntity httpEntity = new HttpEntity<>(savedWord);
-            responseEntity = restTemplate.exchange(
-                    "/update_word/" + savedWord.getId(),
-                    HttpMethod.PUT,
-                    httpEntity,
-                    Word.class);
-            assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-            Word updatedWord = responseEntity.getBody();
-            assertEquals(savedWord, updatedWord);
-        }
+        Word updatedWord = WordbookApplication.getSampleWord(4);
+        updatedWord.setForeignWord("tervist");
+        HttpEntity httpEntity = new HttpEntity<>(updatedWord);
+        ResponseEntity<Word> responseEntity = restTemplate.exchange(
+                "/update_word?word_id=" + updatedWord.getId(),
+                HttpMethod.PUT,
+                httpEntity,
+                Word.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Word result = responseEntity.getBody();
+        assertEquals(result, updatedWord);
     }
 
     @Test
     public void deleteWord() {
         Integer wordRecordId = WordbookApplication.getSampleWord(0).getId();
         ResponseEntity<Word> responseEntity = restTemplate.exchange(
-                "/delete_word/" + wordRecordId,
+                "/delete_word?word_id=" + wordRecordId,
                 HttpMethod.DELETE,
                 null,
                 Word.class);

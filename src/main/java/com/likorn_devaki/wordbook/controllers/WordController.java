@@ -45,6 +45,7 @@ public class WordController {
 
     @PutMapping(path = "update_word")
     public Word update(@RequestParam(value = "word_id") Integer wordId, @RequestBody Word word) {
+        // TODO refactor the method to remove the wordId parameter
         return wordsService.update(wordId, word);
     }
 
