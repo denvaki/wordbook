@@ -1,6 +1,6 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.JWT;
+import com.likorn_devaki.wordbook.JWT.JWTProvider;
 import com.likorn_devaki.wordbook.dto.UserToken;
 import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.security.PasswordEncoder2;
@@ -42,8 +42,10 @@ public class UsersController {
     public ResponseEntity loginUser(@RequestBody User user) {
         User dbUser = usersRepository.findUserByUsername(user.getUsername());
         System.out.println(dbUser);
+        System.out.println(user);
+        System.out.println(PasswordEncoder2.match(dbUser.getPassword(), user.getPassword()));
         if (dbUser != null && PasswordEncoder2.match(dbUser.getPassword(), user.getPassword()))
-            return ResponseEntity.ok(UserToken.of(dbUser.getUsername(),new JWT().createJWT(user.getUsername())));
+            return ResponseEntity.ok(UserToken.of(dbUser.getUsername(),new JWTProvider().createJWT(user.getUsername())));
         return  ResponseEntity.badRequest().body("Bad credentials");
     }
 

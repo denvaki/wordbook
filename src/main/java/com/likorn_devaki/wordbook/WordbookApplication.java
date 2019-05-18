@@ -17,8 +17,8 @@ import java.util.List;
 public class WordbookApplication {
 
     private static final List<User> sampleUsers = Arrays.asList(
-            new User("devaki", "123"),
-            new User("paktalin", "234"));
+            /*new User("devaki", "123"),
+            new User("paktalin", "234")*/);
 
     private static final List<Word> SAMPLE_WORDS = Arrays.asList(
             new Word(0, "kaks", "two"),

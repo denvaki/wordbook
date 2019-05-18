@@ -1,6 +1,7 @@
 package com.likorn_devaki.wordbook.service;
 
 import com.likorn_devaki.wordbook.model.Word;
+import com.likorn_devaki.wordbook.repos.UsersRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class WordsService {
     @Autowired
     private WordsRepository wordsRepository;
 
+    @Autowired
+    private UsersRepository usersRepository;
+
     public Word save(Word word) {
         word.setCreated(LocalDateTime.now().toString());
         return wordsRepository.save(word);
@@ -27,11 +31,12 @@ public class WordsService {
         return wordsRepository.findById(id).orElseThrow(this::badRequest);
     }
 
-    public List<Word> findAll(String foreignWord, String translatedWord, String tag) {
+    public List<Word> findAllByUsername(String foreignWord, String translatedWord, String tag, String username) {
         if (isNotBlank(foreignWord) || isNotBlank(translatedWord) || isNotBlank(tag)) {
             return wordsRepository.findWordsByParams(foreignWord, translatedWord, tag);
         }
-        return new ArrayList<>(wordsRepository.findAll());
+        return new ArrayList<>(wordsRepository.
+                findWordsByUserId(usersRepository.findUserByUsername(username).getUsername()));
     }
 
     public Word update(Integer word_id, Word word) {
