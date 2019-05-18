@@ -39,9 +39,10 @@ public class UserController {
 
     @PostMapping(path = "login")
     public ResponseEntity loginUser(@RequestBody User user) {
+        JWTProvider.init();
         User dbUser = usersRepository.findUserByUsername(user.getUsername());
         if (dbUser != null && PasswordEncoder.match(dbUser.getPassword(), user.getPassword()))
-            return ResponseEntity.ok(UserToken.of(dbUser.getUsername(), new JWTProvider().createJWT(user.getUsername())));
+            return ResponseEntity.ok(UserToken.of(dbUser.getUsername(), JWTProvider.createJWT(user.getUsername())));
         return  ResponseEntity.badRequest().body("Bad credentials");
     }
 

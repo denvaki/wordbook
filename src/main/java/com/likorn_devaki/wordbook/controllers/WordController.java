@@ -34,12 +34,11 @@ public class WordController {
             @RequestParam(value = "translated_word", required = false) String translatedWord,
             @RequestParam(value = "tag", required = false) String tag,
             HttpServletRequest req) {
-        JWTProvider jwtProvider = new JWTProvider();
-        String token = jwtProvider.resolveToken(req).toString();
-        if (jwtProvider.invalidToken(token)){
+        String token = JWTProvider.resolveToken(req).orElse(null);
+        if (JWTProvider.invalidToken(token)){
             return ResponseEntity.badRequest().body("Bad credentials");
         }
-        List<Word> usersWords = wordsService.findAllByUsername(foreignWord, translatedWord, tag, jwtProvider.getUsername(token));
+        List<Word> usersWords = wordsService.findAllByUsername(foreignWord, translatedWord, tag, JWTProvider.getUsername(token));
         return ResponseEntity.ok(usersWords);
     }
 

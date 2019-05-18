@@ -10,14 +10,16 @@ import java.util.Date;
 import java.util.Optional;
 
 public class JWTProvider {
-    private SecretKey secretKey;
+    private static SecretKey secretKey = null;
 
+    private JWTProvider() {}
 
-    public JWTProvider() {
-        secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public static void init() {
+        if (secretKey == null)
+            secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    public String createJWT(String username) {
+    public static String createJWT(String username) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setSubject(username)
@@ -26,17 +28,17 @@ public class JWTProvider {
                 .compact();
     }
 
-    public String getUsername(String token) {
+    public static String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public Optional<String> resolveToken(HttpServletRequest req) {
+    public static Optional<String> resolveToken(HttpServletRequest req) {
         return Optional.ofNullable(req.getHeader("Authorization"))
                 .filter(header -> header.startsWith("Bearer "))
                 .map(header -> header.substring(7));
     }
 
-    public boolean invalidToken(String token) {
+    public static boolean invalidToken(String token) {
         System.out.println(secretKey);
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         try {
