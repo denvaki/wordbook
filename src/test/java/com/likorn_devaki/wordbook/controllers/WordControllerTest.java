@@ -47,7 +47,7 @@ public class WordControllerTest {
         String token = "";
         // TODO pass the token to the url
         ResponseEntity<List<Word>> entity = restTemplate.exchange(
-                "/all_words",
+                "/words",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Word>>() {});

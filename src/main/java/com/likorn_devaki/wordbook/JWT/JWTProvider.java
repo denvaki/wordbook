@@ -12,12 +12,12 @@ import java.util.Optional;
 public class JWTProvider {
     private SecretKey secretKey;
 
+
     public JWTProvider() {
         secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public String createJWT(String username) {
-        System.out.println("Secret key is " + secretKey);
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setSubject(username)

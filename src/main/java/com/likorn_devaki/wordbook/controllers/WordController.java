@@ -28,7 +28,7 @@ public class WordController {
         return wordsService.findOne(id);
     }
 
-    @GetMapping(path = "all_words")
+    @GetMapping(path = "words")
     public ResponseEntity findAll(
             @RequestParam(value = "foreign_word", required = false) String foreignWord,
             @RequestParam(value = "translated_word", required = false) String translatedWord,
