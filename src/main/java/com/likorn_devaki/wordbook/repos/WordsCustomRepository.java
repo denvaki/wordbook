@@ -5,6 +5,6 @@ import com.likorn_devaki.wordbook.model.Word;
 import java.util.List;
 
 public interface WordsCustomRepository {
-    List<Word> findWordsByParams(String foreignWord, String translatedWord, String tag);
+    List<Word> findWordsByParams(String foreignWord, String translatedWord, String tag, Integer userId);
 
 }

@@ -1,6 +1,7 @@
 package com.likorn_devaki.wordbook.repos;
 
 import com.likorn_devaki.wordbook.model.Word;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,11 +16,13 @@ public class WordsCustomRepositoryImpl implements WordsCustomRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<Word> findWordsByParams(String foreignWord, String translatedWord, String tag) {
+    public List<Word> findWordsByParams(String foreignWord, String translatedWord, String tag, Integer userId) {
+
         Query query = entityManager.createNativeQuery("" +
                         "SELECT *\n" +
                         "FROM words \n" +
                         "WHERE true \n" +
+                        "userId = userId\n" +
                         (isNotBlank(foreignWord) ? "and lower(foreignWord) LIKE :foreignWord \n" : "") +
                         (isNotBlank(translatedWord) ? "and lower(translatedWord) LIKE :translatedWord \n" : "") +
                         (isNotBlank(tag) ? "and lower(tag) LIKE :tag \n" : "")

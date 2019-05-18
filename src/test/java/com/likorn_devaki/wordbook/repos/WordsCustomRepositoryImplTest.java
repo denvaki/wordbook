@@ -15,7 +15,6 @@ public class WordsCustomRepositoryImplTest {
 
     @Test
     public void findWordsByParams() {
-        // TODO make test pass
-        wordsRepository.findWordsByParams("tere", null, null);
+        wordsRepository.findWordsByParams(null, null, null, 2);
     }
 }
