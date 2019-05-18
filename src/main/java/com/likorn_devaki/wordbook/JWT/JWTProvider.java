@@ -39,7 +39,6 @@ public class JWTProvider {
     }
 
     public static boolean invalidToken(String token) {
-        System.out.println(secretKey);
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         try {
             return claims.getBody().getExpiration().before(new Date());
