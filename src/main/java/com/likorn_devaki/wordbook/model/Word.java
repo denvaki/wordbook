@@ -12,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class Word {
 
-    public Word(Integer user_id, String foreign_word, String translated_word) {
-        this.userId = user_id;
-        this.foreignWord = foreign_word;
-        this.translatedWord = translated_word;
+    public Word(Integer userId, String foreignWord, String translatedWord) {
+        this.userId = userId;
+        this.foreignWord = foreignWord;
+        this.translatedWord = translatedWord;
     }
 
     @Id

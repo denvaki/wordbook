@@ -7,12 +7,16 @@ import javax.persistence.*;
 import java.awt.*;
 import java.util.List;
 
-
 @Data
 @Entity
 @Table(name = "tags")
 @NoArgsConstructor
-class Tag {
+public class Tag {
+
+    public Tag(User user, String name) {
+        this.user = user;
+        this.name = name;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +31,7 @@ class Tag {
     @Column()
     private Color color;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 
     @ManyToMany()

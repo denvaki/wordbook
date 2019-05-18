@@ -1,7 +1,9 @@
 package com.likorn_devaki.wordbook;
 
+import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.model.Word;
+import com.likorn_devaki.wordbook.repos.TagsRepository;
 import com.likorn_devaki.wordbook.repos.UsersRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -16,9 +18,9 @@ import java.util.List;
 @SpringBootApplication
 public class WordbookApplication {
 
-    private static final List<User> sampleUsers = Arrays.asList(
-            /*new User("devaki", "123"),
-            new User("paktalin", "234")*/);
+    private static final List<User> SAMPLE_USERS = Arrays.asList(
+            new User("devaki", "$2a$10$iQP5PlKDGykcLeg55tQMZ.bKWcwxZ4DiFgWaYQbePI6RrmoWK3UOm"),
+            new User("paktalin", "$2a$10$MEBVisq.DwSS1finjdrf.eEmqwD4SiOOzU.XRp15MCMWzCLN4HR32"));
 
     private static final List<Word> SAMPLE_WORDS = Arrays.asList(
             new Word(0, "kaks", "two"),
@@ -26,6 +28,10 @@ public class WordbookApplication {
             new Word(0, "neli", "four"),
             new Word(1, "tere", "hello"),
             new Word(1, "head aega", "goodbye"));
+
+    private static final List<Tag> SAMPLE_TAGS = Arrays.asList(
+            new Tag(getSampleUser(0), "numbers"),
+            new Tag(getSampleUser(0), "verbs"));
 
     public static void main(String[] args) {
         SpringApplication.run(WordbookApplication.class, args);
@@ -41,15 +47,18 @@ public class WordbookApplication {
     @Bean
     public CommandLineRunner initUsers(UsersRepository repository) {
         return (args) -> {
-            sampleUsers.forEach(u -> u.setCreated(LocalDateTime.now()));
-            repository.saveAll(sampleUsers);
+            SAMPLE_USERS.forEach(u -> u.setCreated(LocalDateTime.now()));
+            repository.saveAll(SAMPLE_USERS);
         };
     }
 
-    public static User getSampleUserWithNullId(int index) {
-        User sampleUser = sampleUsers.get(index);
-        sampleUser.setId(null);
-        return sampleUser;
+    @Bean
+    public CommandLineRunner initTags(TagsRepository repository) {
+        return (args) -> repository.saveAll(SAMPLE_TAGS);
+    }
+
+    public static User getSampleUser(int index) {
+        return SAMPLE_USERS.get(index);
     }
 
     public static Word getSampleWord(int index) {

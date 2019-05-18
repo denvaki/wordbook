@@ -3,7 +3,7 @@ package com.likorn_devaki.wordbook.security;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 //@Component
-public class PasswordEncoder2 {
+public class PasswordEncoder {
     private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     public static String encode(CharSequence rawPassword) {

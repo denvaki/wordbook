@@ -1,6 +1,8 @@
 package com.likorn_devaki.wordbook.controllers;
 
+import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.model.Word;
+import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.WordbookApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,5 +82,11 @@ public class WordControllerTest {
                 Word.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
+    }
+
+    @Test
+    public void addTag() {
+        User user = WordbookApplication.getSampleUser(1);
+        Tag tag = new Tag(user, "numbers");
     }
 }

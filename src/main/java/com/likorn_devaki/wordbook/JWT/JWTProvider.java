@@ -2,25 +2,22 @@ package com.likorn_devaki.wordbook.JWT;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.util.Date;
 import java.util.Optional;
 
 public class JWTProvider {
     private SecretKey secretKey;
-    @PostConstruct
-    protected void init() {
+
+    public JWTProvider() {
         secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public String createJWT(String username) {
+        System.out.println("Secret key is " + secretKey);
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setSubject(username)

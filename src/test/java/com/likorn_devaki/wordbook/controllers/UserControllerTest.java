@@ -39,7 +39,8 @@ public class UserControllerTest {
 
     @Test
     public void userWithExistingUsernameNotCreated() {
-        User user = WordbookApplication.getSampleUserWithNullId(0);
+        User user = WordbookApplication.getSampleUser(0);
+        user.setId(null);
         ResponseEntity<User> responseEntity = restTemplate.postForEntity(
                 "/create_user", user, User.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
