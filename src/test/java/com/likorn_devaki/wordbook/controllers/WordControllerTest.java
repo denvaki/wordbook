@@ -1,6 +1,5 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.WordbookApplication;
 import org.junit.Test;
@@ -24,15 +23,6 @@ import static org.junit.Assert.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class WordControllerTest {
 
-    private static final String
-            SAVE_WORD_PATH = "save_word",
-            ALL_WORDS_PATH = "all_words",
-            CREATE_USER_PATH = "create_user",
-            ALL_USERS_PATH = "all_users",
-            ALL_WORDS_WHERE_USER_ID_PATH = "all_words_where_user_id",
-            UPDATE_WORD_PATH = "update_word",
-            DELETE_WORD_PATH = "delete_word";
-
     @LocalServerPort
     int port = 9090;
     @Autowired
@@ -43,36 +33,16 @@ public class WordControllerTest {
         //TODO add a word for the user only if the user with the specified id exists
         Word word = new Word(1, "viis", "five");
         ResponseEntity<Word> responseEntity = restTemplate.postForEntity(
-                "/" + SAVE_WORD_PATH, word, Word.class);
+                "/save_word", word, Word.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Word savedWord = responseEntity.getBody();
         assertNotNull(savedWord);
     }
 
     @Test
-    public void userWithUniqueUsernameIsCreated() {
-        User user = new User("meow", "meow");
-        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/" + CREATE_USER_PATH, user, User.class);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        User createdUser = responseEntity.getBody();
-        assertNotNull(createdUser);
-    }
-
-    @Test
-    public void userWithExistingUsernameNotCreated() {
-        User user = WordbookApplication.getSampleUserWithNullId(0);
-        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/" + CREATE_USER_PATH, user, User.class);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        User createdUser = responseEntity.getBody();
-        assertNull(createdUser);
-    }
-
-    @Test
     public void getAllWords() {
         ResponseEntity<List<Word>> entity = restTemplate.exchange(
-                "/" + ALL_WORDS_PATH,
+                "/all_words",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Word>>() {
@@ -84,23 +54,9 @@ public class WordControllerTest {
     }
 
     @Test
-    public void getAllUsers() {
-        ResponseEntity<List<User>> entity = restTemplate.exchange(
-                "/" + ALL_USERS_PATH,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<User>>() {
-                });
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        List<User> users = entity.getBody();
-        assertNotNull(users);
-        assertTrue(users.size() > 0);
-    }
-
-    @Test
     public void getAllWordsWhereUserId() { // check that the request returns some words for the selected user
         ResponseEntity<List<Word>> entity = restTemplate.exchange(
-                "/" + ALL_WORDS_WHERE_USER_ID_PATH + "/1",
+                "/all_words_where_user_id/1",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Word>>() {
@@ -116,7 +72,7 @@ public class WordControllerTest {
         // save a word
         Word word = new Word(1, "kus", "six");
         ResponseEntity<Word> responseEntity = restTemplate.postForEntity(
-                "/" + SAVE_WORD_PATH, word, Word.class);
+                "/save_word", word, Word.class);
         Word savedWord = responseEntity.getBody();
 
         // update word
@@ -126,7 +82,7 @@ public class WordControllerTest {
             // update the word
             HttpEntity httpEntity = new HttpEntity<>(savedWord);
             responseEntity = restTemplate.exchange(
-                    "/" + UPDATE_WORD_PATH + "/" + savedWord.getId(),
+                    "/update_word/" + savedWord.getId(),
                     HttpMethod.PUT,
                     httpEntity,
                     Word.class);
@@ -140,7 +96,7 @@ public class WordControllerTest {
     public void deleteWord() {
         Integer wordRecordId = WordbookApplication.getSampleWord(0).getId();
         ResponseEntity<Word> responseEntity = restTemplate.exchange(
-                "/" + DELETE_WORD_PATH + "/" + wordRecordId,
+                "/delete_word/" + wordRecordId,
                 HttpMethod.DELETE,
                 null,
                 Word.class);
