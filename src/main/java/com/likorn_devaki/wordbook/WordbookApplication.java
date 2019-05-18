@@ -23,11 +23,11 @@ public class WordbookApplication {
             new User("paktalin", "$2a$10$MEBVisq.DwSS1finjdrf.eEmqwD4SiOOzU.XRp15MCMWzCLN4HR32"));
 
     private static final List<Word> SAMPLE_WORDS = Arrays.asList(
-            new Word(0, "kaks", "two"),
-            new Word(0, "kolm", "three"),
-            new Word(0, "neli", "four"),
-            new Word(1, "tere", "hello"),
-            new Word(1, "head aega", "goodbye"));
+            new Word(1, "kaks", "two"),
+            new Word(1, "kolm", "three"),
+            new Word(1, "neli", "four"),
+            new Word(2, "tere", "hello"),
+            new Word(2, "head aega", "goodbye"));
 
     private static final List<Tag> SAMPLE_TAGS = Arrays.asList(
             new Tag(getSampleUser(0), "numbers"),
