@@ -48,17 +48,20 @@ public class WordController {
     }
 
     @PutMapping(path = "update_word")
-    public Word update(@RequestParam(value = "word_id") Integer wordId, @RequestBody Word word, HttpServletRequest request) {
-        // TODO refactor the method to remove the wordId parameter
+    public Word update(@RequestBody Word word, HttpServletRequest request) {
         String token = extractToken(request);
         if (token == null)
             return null;
-        return wordsService.update(wordId, word);
+        return wordsService.update(word.getId(), word);
     }
 
     @DeleteMapping(path = "delete_word")
-    public void delete(@RequestParam(value = "word_id") Integer wordId) {
+    public ResponseEntity delete(@RequestParam(value = "word_id") Integer wordId, HttpServletRequest request) {
+        String token = extractToken(request);
+        if (token == null)
+            return ResponseEntity.badRequest().body("Bad credentials");
         wordsService.delete(wordId);
+        return ResponseEntity.ok().build();
     }
 
     private String extractToken(HttpServletRequest request) {
