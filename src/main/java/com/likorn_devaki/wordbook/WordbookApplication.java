@@ -37,12 +37,6 @@ public class WordbookApplication {
         SpringApplication.run(WordbookApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner initWords(WordsRepository repository) {
-        String created = LocalDateTime.now().toString();
-        SAMPLE_WORDS.forEach(w -> w.setCreated(created));
-        return (args) -> repository.saveAll(SAMPLE_WORDS);
-    }
 
     @Bean
     public CommandLineRunner initUsers(UsersRepository repository) {
@@ -50,6 +44,13 @@ public class WordbookApplication {
             SAMPLE_USERS.forEach(u -> u.setCreated(LocalDateTime.now()));
             repository.saveAll(SAMPLE_USERS);
         };
+    }
+
+    @Bean
+    public CommandLineRunner initWords(WordsRepository repository) {
+        String created = LocalDateTime.now().toString();
+        SAMPLE_WORDS.forEach(w -> w.setCreated(created));
+        return (args) -> repository.saveAll(SAMPLE_WORDS);
     }
 
     @Bean
