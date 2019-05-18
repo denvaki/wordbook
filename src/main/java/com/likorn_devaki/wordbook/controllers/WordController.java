@@ -12,6 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping
+@RestController
 public class WordController {
 
     @Autowired
