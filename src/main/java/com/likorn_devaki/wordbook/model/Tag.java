@@ -1,10 +1,10 @@
 package com.likorn_devaki.wordbook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.util.List;
 
 @Data
@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Tag {
 
-    public Tag(User user, String name) {
-        this.user = user;
+    public Tag(Integer userId, String name) {
+        this.userId = userId;
         this.name = name;
     }
 
@@ -29,11 +29,12 @@ public class Tag {
     private String description;
 
     @Column()
-    private Color color;
+    private String color;
 
-    @ManyToOne(optional = false)
-    private User user;
+    @Column(nullable = false)
+    private Integer userId;
 
+    @JsonIgnore
     @ManyToMany()
     private List<Word> words;
 

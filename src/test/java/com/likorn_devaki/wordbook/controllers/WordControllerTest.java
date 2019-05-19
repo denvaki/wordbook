@@ -87,6 +87,6 @@ public class WordControllerTest {
     @Test
     public void addTag() {
         User user = WordbookApplication.getSampleUser(1);
-        Tag tag = new Tag(user, "numbers");
+        Tag tag = new Tag(user.getId(), "numbers");
     }
 }

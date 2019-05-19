@@ -26,7 +26,7 @@ public class TagControllerTest {
 
     @Test
     public void save() {
-        Tag tag = new Tag(WordbookApplication.getSampleUser(0), "food");
+        Tag tag = new Tag(WordbookApplication.getSampleUser(0).getId(), "food");
         ResponseEntity<Tag> responseEntity = restTemplate.postForEntity(
                 "/save_tag", tag, Tag.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

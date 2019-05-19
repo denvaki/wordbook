@@ -3,8 +3,10 @@ package com.likorn_devaki.wordbook.controllers;
 import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.repos.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -21,7 +23,8 @@ public class TagController {
     }
 
     @GetMapping(path = "tags")
-    public List<Tag> findAll(){
-        return tagsRepository.findAll();
+    public ResponseEntity findAll(){
+        // TODO return tags of the current user only
+        return ResponseEntity.ok(tagsRepository.findAll());
     }
 }

@@ -30,8 +30,8 @@ public class WordbookApplication {
             new Word(2, "head aega", "goodbye"));
 
     private static final List<Tag> SAMPLE_TAGS = Arrays.asList(
-            new Tag(getSampleUser(0), "numbers"),
-            new Tag(getSampleUser(0), "verbs"));
+            new Tag(1, "numbers"),
+            new Tag(1, "verbs"));
 
     public static void main(String[] args) {
         SpringApplication.run(WordbookApplication.class, args);
