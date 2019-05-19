@@ -5,7 +5,7 @@ import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.repos.TagsRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,7 @@ public class WordsService {
             return ResponseEntity.badRequest().body("Bad credentials");
         word.addTag(tag);
         tag.addWord(word);
-        Pair<Word, Tag> pair = new Pair<>(wordsRepository.save(word), tagsRepository.save(tag));
+        ImmutablePair<Word, Tag> pair = new ImmutablePair<>(wordsRepository.save(word), tagsRepository.save(tag));
         return ResponseEntity.ok(pair);
     }
 

@@ -14,12 +14,13 @@ public class JWTProvider {
 
     private JWTProvider() {}
 
-    public static void init() {
+    private static void init() {
         if (secretKey == null)
             secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public static String createJWT(Integer userId) {
+        init();
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setSubject(String.valueOf(userId))
@@ -29,16 +30,19 @@ public class JWTProvider {
     }
 
     public static Integer getUserId(String token) {
+        init();
         return Integer.parseInt(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
     }
 
     public static Optional<String> resolveToken(HttpServletRequest req) {
+        init();
         return Optional.ofNullable(req.getHeader("Authorization"))
                 .filter(header -> header.startsWith("Bearer "))
                 .map(header -> header.substring(7));
     }
 
     public static boolean invalidToken(String token) {
+        init();
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         try {
             return claims.getBody().getExpiration().before(new Date());
