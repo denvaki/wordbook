@@ -36,4 +36,8 @@ public class Tag {
 
     @ManyToMany()
     private List<Word> words;
+
+    public void addWord(Word word) {
+        words.add(word);
+    }
 }

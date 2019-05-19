@@ -37,4 +37,8 @@ public class Word {
 
     @ManyToMany(mappedBy = "words")
     private List<Tag> tags;
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
 }

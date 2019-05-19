@@ -1,9 +1,11 @@
 package com.likorn_devaki.wordbook.service;
 
 import com.likorn_devaki.wordbook.JWT.JWTProvider;
+import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.model.Word;
-import com.likorn_devaki.wordbook.repos.UsersRepository;
+import com.likorn_devaki.wordbook.repos.TagsRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,8 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -21,6 +21,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class WordsService {
     @Autowired
     private WordsRepository wordsRepository;
+    @Autowired
+    private TagsRepository tagsRepository;
 
     public Word save(Word word, HttpServletRequest request) {
         String token = extractToken(request);
@@ -54,6 +56,15 @@ public class WordsService {
         if (invalidToken(request))
             return null;
         return wordsRepository.save(word);
+    }
+
+    public ResponseEntity addTag(Word word, Tag tag, HttpServletRequest request) {
+        if (invalidToken(request))
+            return ResponseEntity.badRequest().body("Bad credentials");
+        word.addTag(tag);
+        tag.addWord(word);
+        Pair<Word, Tag> pair = new Pair<>(wordsRepository.save(word), tagsRepository.save(tag));
+        return ResponseEntity.ok(pair);
     }
 
     public ResponseEntity delete(Integer id, HttpServletRequest request) {

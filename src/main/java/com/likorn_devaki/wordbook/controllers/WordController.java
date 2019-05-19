@@ -1,5 +1,6 @@
 package com.likorn_devaki.wordbook.controllers;
 
+import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.service.WordsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class WordController {
     @PutMapping(path = "update_word")
     public Word update(@RequestBody Word word, HttpServletRequest request) {
         return wordsService.update(word, request);
+    }
+
+    @PutMapping(path = "add_tag")
+    public ResponseEntity addTag(@RequestBody Word word, @RequestBody Tag tag, HttpServletRequest request) {
+        return wordsService.addTag(word, tag, request);
     }
 
     @DeleteMapping(path = "delete_word")
