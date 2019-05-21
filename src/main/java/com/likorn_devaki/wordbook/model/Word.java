@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -33,7 +35,7 @@ public class Word {
     private String translatedWord;
 
     @Column(nullable = false)
-    private String created;
+    private LocalDateTime created;
 
     @ManyToMany(mappedBy = "words")
     private List<Tag> tags;

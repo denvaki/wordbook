@@ -1,7 +1,7 @@
 package com.likorn_devaki.wordbook.controllers;
 
 import com.likorn_devaki.wordbook.JWT.JWTProvider;
-import com.likorn_devaki.wordbook.dto.UserToken;
+import com.likorn_devaki.wordbook.dto.ResponseToUsr;
 import com.likorn_devaki.wordbook.model.User;
 import com.likorn_devaki.wordbook.security.PasswordEncoder;
 import com.likorn_devaki.wordbook.repos.UsersRepository;
@@ -30,19 +30,23 @@ public class UserController {
         }
         user.setCreated(LocalDateTime.now());
         if (usersRepository.existsByUsername(user.getUsername())){
-            return ResponseEntity.badRequest().body(String.format("Username %s already exist",  user.getUsername()));
+            return ResponseEntity.badRequest().body(
+                    ResponseToUsr.builder()
+                    .message(String.format("Username %s already exist",  user.getUsername()))
+                    .build()
+            );
         }
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok().body(ResponseToUsr.builder().message("User has been registered!").build());
     }
 
     @PostMapping(path = "login")
     public ResponseEntity loginUser(@RequestBody User user) {
         User dbUser = usersRepository.findUserByUsername(user.getUsername());
         if (dbUser != null && PasswordEncoder.match(dbUser.getPassword(), user.getPassword()))
-            return ResponseEntity.ok(UserToken.of(dbUser.getUsername(), JWTProvider.createJWT(dbUser.getId())));
-        return  ResponseEntity.badRequest().body("Bad credentials");
+            return ResponseEntity.ok(ResponseToUsr.builder().token(JWTProvider.createJWT(dbUser.getId())).build());
+        return  ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Bad credentials").build());
     }
 
     @GetMapping(path = "all_users")
