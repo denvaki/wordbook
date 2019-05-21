@@ -24,7 +24,7 @@ public class TagController {
 
     @GetMapping(path = "tags")
     public ResponseEntity findAll(){
-        // TODO return tags of the current user only
+        // TODO return tagIds of the current user only
         return ResponseEntity.ok(tagsRepository.findAll());
     }
 }

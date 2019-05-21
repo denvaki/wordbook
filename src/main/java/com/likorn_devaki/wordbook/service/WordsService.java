@@ -1,85 +1,76 @@
 package com.likorn_devaki.wordbook.service;
 
 import com.likorn_devaki.wordbook.JWT.JWTProvider;
-import com.likorn_devaki.wordbook.dto.ResponseToUsr;
-import com.likorn_devaki.wordbook.model.Tag;
+import com.likorn_devaki.wordbook.dto.UserResponse;
 import com.likorn_devaki.wordbook.model.Word;
-import com.likorn_devaki.wordbook.repos.TagsRepository;
 import com.likorn_devaki.wordbook.repos.WordsRepository;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class WordsService {
     @Autowired
     private WordsRepository wordsRepository;
-    @Autowired
-    private TagsRepository tagsRepository;
 
-    public ResponseEntity<ResponseToUsr> save(Word word, HttpServletRequest request) {
+    public ResponseEntity<UserResponse> save(Word word, HttpServletRequest request) {
         String token = extractToken(request);
         if(token == null){
-            return  ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in").build());
+            return  ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         }
         word.setCreated(LocalDateTime.now());
         word.setUserId(JWTProvider.getUserId(token));
-        return ResponseEntity.ok().body(ResponseToUsr.builder().word(wordsRepository.save(word)).message("Word has been saved!").build());
+        return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("Word has been saved!").build());
     }
 
-    public ResponseEntity<ResponseToUsr> findOne(Integer id, HttpServletRequest request) {
+    public ResponseEntity<UserResponse> findOne(Integer id, HttpServletRequest request) {
         if (invalidToken(request))
-            return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in").build());
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         Optional<Word> word = wordsRepository.findById(id);
-        if (word.isPresent()) return ResponseEntity.ok(ResponseToUsr.builder().word(word.get()).build());
-        return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("No such word").build());
+        if (word.isPresent()) return ResponseEntity.ok(UserResponse.builder().word(word.get()).build());
+        return ResponseEntity.badRequest().body(UserResponse.builder().message("No such word").build());
         }
 
 
-    public ResponseEntity<ResponseToUsr> findAllByUsername(String foreignWord,
-                                        String translatedWord,
-                                        String tag,
-                                        HttpServletRequest request) {
+    public ResponseEntity<UserResponse> findAllByUsername(String foreignWord,
+                                                          String translatedWord,
+                                                          String tag,
+                                                          HttpServletRequest request) {
         String token = extractToken(request);
         if (token == null)
-            return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in").build());
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         Integer userId = JWTProvider.getUserId(token);
         if (isNotBlank(foreignWord) || isNotBlank(translatedWord) || isNotBlank(tag))
-            return ResponseEntity.ok(ResponseToUsr.builder()
+            return ResponseEntity.ok(UserResponse.builder()
                     .wordList(wordsRepository.findWordsByParams(foreignWord, translatedWord, tag, userId))
                     .build());
-        return ResponseEntity.ok(ResponseToUsr.builder().wordList(wordsRepository.findWordsByUserId(userId)).build());
+        return ResponseEntity.ok(UserResponse.builder().wordList(wordsRepository.findWordsByUserId(userId)).build());
     }
 
-    public ResponseEntity<ResponseToUsr> update(Word word, HttpServletRequest request) {
+    public ResponseEntity<UserResponse> update(Word word, HttpServletRequest request) {
         if (invalidToken(request))
-            return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in").build());
-        return ResponseEntity.ok().body(ResponseToUsr.builder().word(wordsRepository.save(word)).message("Word has been updated!").build());
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
+        return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("Word has been updated!").build());
     }
 
-    public ResponseEntity addTag(Word word, Tag tag, HttpServletRequest request) {
+    public ResponseEntity<UserResponse> addTag(Word word, String tagId, HttpServletRequest request) {
         if (invalidToken(request))
-            return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in"));
-        word.addTag(tag);
-        tag.addWord(word);
-        ImmutablePair<Word, Tag> pair = new ImmutablePair<>(wordsRepository.save(word), tagsRepository.save(tag));
-        return ResponseEntity.ok(pair);
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
+        word.addTag(tagId);
+        return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("The tag has been added!").build());
     }
 
-    public ResponseEntity<ResponseToUsr> delete(Integer id, HttpServletRequest request) {
+    public ResponseEntity<UserResponse> delete(Integer id, HttpServletRequest request) {
         if (invalidToken(request))
-            return ResponseEntity.badRequest().body(ResponseToUsr.builder().message("Please re-log in").build());
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         wordsRepository.deleteById(id);
-        return ResponseEntity.ok().body(ResponseToUsr.builder().message("Word has been deleted!").build());
+        return ResponseEntity.ok().body(UserResponse.builder().message("Word has been deleted!").build());
     }
 
     private boolean invalidToken(HttpServletRequest request) {

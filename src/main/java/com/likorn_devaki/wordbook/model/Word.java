@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,10 +37,10 @@ public class Word {
     @Column(nullable = false)
     private LocalDateTime created;
 
-    @ManyToMany(mappedBy = "words")
-    private List<Tag> tags;
+    @ElementCollection
+    private Set<String> tagIds = Collections.emptySet();
 
-    public void addTag(Tag tag) {
-        tags.add(tag);
+    public void addTag(String tagId) {
+        tagIds.add(tagId);
     }
 }

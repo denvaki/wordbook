@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "tags")
+@Table(name = "tagIds")
 @NoArgsConstructor
 public class Tag {
 
