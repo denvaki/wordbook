@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.likorn_devaki.wordbook.JWT.JWTProvider.extractToken;
+import static com.likorn_devaki.wordbook.JWT.JWTProvider.invalidToken;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
@@ -71,17 +73,6 @@ public class WordsService {
             return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         wordsRepository.deleteById(id);
         return ResponseEntity.ok().body(UserResponse.builder().message("Word has been deleted!").build());
-    }
-
-    private boolean invalidToken(HttpServletRequest request) {
-        return extractToken(request) == null;
-    }
-
-    private String extractToken(HttpServletRequest request) {
-        String token = JWTProvider.resolveToken(request).orElse(null);
-        if (JWTProvider.invalidToken(token))
-            return null;
-        return token;
     }
 
 }

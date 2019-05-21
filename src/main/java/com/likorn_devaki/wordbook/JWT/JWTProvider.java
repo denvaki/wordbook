@@ -33,12 +33,23 @@ public class JWTProvider {
                 .map(header -> header.substring(7));
     }
 
-    public static boolean invalidToken(String token) {
+    private static boolean invalidToken(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         try {
             return claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             return true;
         }
+    }
+
+    public static boolean invalidToken(HttpServletRequest request) {
+        return extractToken(request) == null;
+    }
+
+    public static String extractToken(HttpServletRequest request) {
+        String token = JWTProvider.resolveToken(request).orElse(null);
+        if (JWTProvider.invalidToken(token))
+            return null;
+        return token;
     }
 }
