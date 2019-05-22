@@ -34,8 +34,14 @@ public class TagController {
     }
 
     @GetMapping(path = "tags")
-    public ResponseEntity findAll(){
+    public ResponseEntity findAll(HttpServletRequest request){
         // TODO return tagIds of the current user only
-        return ResponseEntity.ok(tagsRepository.findAll());
+        String token = extractToken(request);
+        if (token == null)
+            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
+        Integer userId = JWTProvider.getUserId(token);
+        System.out.println(userId);
+        System.out.println(tagsRepository.findAllByUserId(userId));
+        return ResponseEntity.ok().body(UserResponse.builder().tagList(tagsRepository.findAllByUserId(userId)).build());
     }
 }

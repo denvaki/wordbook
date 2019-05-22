@@ -13,5 +13,6 @@ public class UserResponse {
     public Word word;
     public Tag tag;
     public List<Word> wordList;
+    public List<Tag> tagList;
 }
 
