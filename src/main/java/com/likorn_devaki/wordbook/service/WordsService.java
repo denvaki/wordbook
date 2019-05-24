@@ -26,7 +26,7 @@ public class WordsService {
         if(token == null){
             return  ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         }
-        word.setCreated(LocalDateTime.now());
+        word.setCreated(LocalDateTime.now().toString());
         word.setUserId(JWTProvider.getUserId(token));
         return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("Word has been saved!").build());
     }

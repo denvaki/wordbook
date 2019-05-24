@@ -35,7 +35,7 @@ public class Word {
     private String translatedWord;
 
     @Column(nullable = false)
-    private LocalDateTime created;
+    private String created;
 
     @ElementCollection
     private Set<String> tagIds = Collections.emptySet();

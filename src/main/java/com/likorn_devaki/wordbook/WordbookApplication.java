@@ -48,8 +48,7 @@ public class WordbookApplication {
 
     @Bean
     public CommandLineRunner initWords(WordsRepository repository) {
-        LocalDateTime created = LocalDateTime.now();
-        SAMPLE_WORDS.forEach(w -> w.setCreated(created));
+        SAMPLE_WORDS.forEach(w -> w.setCreated(LocalDateTime.now().toString()));
         return (args) -> repository.saveAll(SAMPLE_WORDS);
     }
 
