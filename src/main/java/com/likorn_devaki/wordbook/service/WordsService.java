@@ -61,9 +61,7 @@ public class WordsService {
         return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("Word has been updated!").build());
     }
 
-    public ResponseEntity<UserResponse> addTag(Word word, String tagId, HttpServletRequest request) {
-        if (invalidToken(request))
-            return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
+    public ResponseEntity<UserResponse> addTag(Word word, Integer tagId) {
         word.addTag(tagId);
         return ResponseEntity.ok().body(UserResponse.builder().word(wordsRepository.save(word)).message("The tag has been added!").build());
     }

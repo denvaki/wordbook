@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.likorn_devaki.wordbook.JWT.JWTProvider.invalidToken;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping
 @RestController
@@ -16,6 +18,8 @@ public class WordController {
 
     @Autowired
     private WordsService wordsService;
+    private ResponseEntity<UserResponse> responseReLogIn =
+            ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
 
     @PostMapping(path = "save_word")
     public ResponseEntity<UserResponse> save(@RequestBody Word word, HttpServletRequest request) {
@@ -44,9 +48,11 @@ public class WordController {
     @PutMapping(path = "add_tag")
     public ResponseEntity<UserResponse> addTag(
             @RequestBody Word word,
-            @RequestParam(value = "tag_id") String tagId,
+            @RequestParam(value = "tag_id") Integer tagId,
             HttpServletRequest request) {
-        return wordsService.addTag(word, tagId, request);
+        if (invalidToken(request))
+            return responseReLogIn;
+        return wordsService.addTag(word, tagId);
     }
 
     @DeleteMapping(path = "delete_word")

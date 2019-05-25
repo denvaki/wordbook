@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 import static com.likorn_devaki.wordbook.JWT.JWTProvider.extractToken;
 
@@ -40,8 +39,6 @@ public class TagController {
         if (token == null)
             return ResponseEntity.badRequest().body(UserResponse.builder().message("Please re-log in").build());
         Integer userId = JWTProvider.getUserId(token);
-        System.out.println(userId);
-        System.out.println(tagsRepository.findAllByUserId(userId));
         return ResponseEntity.ok().body(UserResponse.builder().tagList(tagsRepository.findAllByUserId(userId)).build());
     }
 }

@@ -1,6 +1,6 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.model.User;
+import com.likorn_devaki.wordbook.dto.UserResponse;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.model.Tag;
 import com.likorn_devaki.wordbook.WordbookApplication;
@@ -29,6 +29,8 @@ public class WordControllerTest {
     int port = 9090;
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private WordController wordController;
 
     @Test
     public void saveWord() {
@@ -86,7 +88,5 @@ public class WordControllerTest {
 
     @Test
     public void addTag() {
-        User user = WordbookApplication.getSampleUser(1);
-        Tag tag = new Tag(user.getId(), "numbers");
     }
 }

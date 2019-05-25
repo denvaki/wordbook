@@ -64,4 +64,9 @@ public class WordbookApplication {
     public static Word getSampleWord(int index) {
         return SAMPLE_WORDS.get(index);
     }
+
+    public static Tag getSampleTag(int index) {
+        return SAMPLE_TAGS.get(index);
+    }
+
 }

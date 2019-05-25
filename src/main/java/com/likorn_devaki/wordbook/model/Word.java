@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -38,9 +39,11 @@ public class Word {
     private String created;
 
     @ElementCollection
-    private Set<String> tagIds = Collections.emptySet();
+    private Set<Integer> tagIds;
 
-    public void addTag(String tagId) {
+    public void addTag(Integer tagId) {
+        if (tagIds == null)
+            tagIds = new HashSet<>();
         tagIds.add(tagId);
     }
 }
