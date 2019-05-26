@@ -23,11 +23,23 @@ public class JWTProvider {
                 .compact();
     }
 
-    public static Integer getUserId(String token) {
+    public static boolean invalidToken(HttpServletRequest request) {
+        return extractToken(request) == null;
+    }
+
+    public static Integer extractUserId(HttpServletRequest request) {
+        try {
+            return getUserId(extractToken(request));
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private static Integer getUserId(String token) {
         return Integer.parseInt(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
     }
 
-    public static Optional<String> resolveToken(HttpServletRequest req) {
+    private static Optional<String> resolveToken(HttpServletRequest req) {
         return Optional.ofNullable(req.getHeader("Authorization"))
                 .filter(header -> header.startsWith("Bearer "))
                 .map(header -> header.substring(7));
@@ -42,11 +54,7 @@ public class JWTProvider {
         }
     }
 
-    public static boolean invalidToken(HttpServletRequest request) {
-        return extractToken(request) == null;
-    }
-
-    public static String extractToken(HttpServletRequest request) {
+    private static String extractToken(HttpServletRequest request) {
         String token = JWTProvider.resolveToken(request).orElse(null);
         if (JWTProvider.invalidToken(token))
             return null;

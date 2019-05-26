@@ -1,6 +1,5 @@
 package com.likorn_devaki.wordbook.controllers;
 
-import com.likorn_devaki.wordbook.JWT.JWTProvider;
 import com.likorn_devaki.wordbook.dto.UserResponse;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.service.WordsService;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.likorn_devaki.wordbook.JWT.JWTProvider.extractToken;
+import static com.likorn_devaki.wordbook.JWT.JWTProvider.extractUserId;
 import static com.likorn_devaki.wordbook.JWT.JWTProvider.invalidToken;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -25,7 +24,7 @@ public class WordController {
 
     @PostMapping(path = "save_word")
     public ResponseEntity<UserResponse> save(@RequestBody Word word, HttpServletRequest request) {
-        Integer userId = getUserId(request);
+        Integer userId = extractUserId(request);
         if (userId == null)
             return responseReLogIn;
         return wordsService.save(word, userId);
@@ -44,7 +43,7 @@ public class WordController {
             @RequestParam(value = "translated_word", required = false) String translatedWord,
             @RequestParam(value = "tag", required = false) String tag,
             HttpServletRequest request) {
-        Integer userId = getUserId(request);
+        Integer userId = extractUserId(request);
         if (userId == null)
             return responseReLogIn;
         return wordsService.findAllByUserId(foreignWord, translatedWord, tag, userId);
@@ -72,13 +71,5 @@ public class WordController {
         if (invalidToken(request))
             return responseReLogIn;
         return wordsService.delete(wordId);
-    }
-
-    private Integer getUserId(HttpServletRequest request) {
-        try {
-            return JWTProvider.getUserId(extractToken(request));
-        } catch (Exception ignored) {
-            return null;
-        }
     }
 }
