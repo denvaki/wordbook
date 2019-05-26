@@ -23,21 +23,20 @@ public class UserController {
 
     @PostMapping(path = "register")
     public ResponseEntity createUser(@RequestBody User user) {
-        System.out.println("registering a new user");
         if(user.getUsername() ==  null || user.getPassword() == null){
-            return ResponseEntity.badRequest().body("Empty one or both of credentials fields");
+            return ResponseEntity.badRequest().body("Some credentials are missing");
         }
         user.setCreated(LocalDateTime.now());
         if (usersRepository.existsByUsername(user.getUsername())){
             return ResponseEntity.badRequest().body(
                     UserResponse.builder()
-                    .message(String.format("Username %s already exist",  user.getUsername()))
+                    .message(String.format("Username %s already exists",  user.getUsername()))
                     .build()
             );
         }
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
-        return ResponseEntity.ok().body(UserResponse.builder().message("User has been registered!").build());
+        return ResponseEntity.ok().body(UserResponse.builder().message("User has been signed up!").build());
     }
 
     @PostMapping(path = "login")
@@ -46,10 +45,5 @@ public class UserController {
         if (dbUser != null && PasswordEncoder.match(dbUser.getPassword(), user.getPassword()))
             return ResponseEntity.ok(UserResponse.builder().token(JWTProvider.createJWT(dbUser.getId())).build());
         return  ResponseEntity.badRequest().body(UserResponse.builder().message("Bad credentials").build());
-    }
-
-    @GetMapping(path = "all_users")
-    public List<User> getAllUsers() {
-        return new ArrayList<>(usersRepository.findAll());
     }
 }
