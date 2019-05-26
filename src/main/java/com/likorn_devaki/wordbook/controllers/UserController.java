@@ -44,6 +44,6 @@ public class UserController {
         User dbUser = usersRepository.findUserByUsername(user.getUsername());
         if (dbUser != null && PasswordEncoder.match(dbUser.getPassword(), user.getPassword()))
             return ResponseEntity.ok(UserResponse.builder().token(JWTProvider.createJWT(dbUser.getId())).build());
-        return  ResponseEntity.badRequest().body(UserResponse.builder().message("Bad credentials").build());
+        return ResponseEntity.badRequest().body(UserResponse.builder().message("Bad credentials").build());
     }
 }

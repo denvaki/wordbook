@@ -30,35 +30,29 @@ public class UserControllerTest {
     @Test
     public void userWithUniqueUsernameIsCreated() {
         User user = new User("meow", "meow");
-        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/create_user", user, User.class);
+        ResponseEntity responseEntity = restTemplate.postForEntity("/register", user, User.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        User createdUser = responseEntity.getBody();
-        assertNotNull(createdUser);
     }
 
     @Test
     public void userWithExistingUsernameNotCreated() {
         User user = WordbookApplication.getSampleUser(0);
         user.setId(null);
-        ResponseEntity<User> responseEntity = restTemplate.postForEntity(
-                "/create_user", user, User.class);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        User createdUser = responseEntity.getBody();
-        assertNull(createdUser);
+        ResponseEntity<User> responseEntity = restTemplate.postForEntity("/register", user, User.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
-    public void getAllUsers() {
-        ResponseEntity<List<User>> entity = restTemplate.exchange(
-                "/all_users",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<User>>() {
-                });
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        List<User> users = entity.getBody();
-        assertNotNull(users);
-        assertTrue(users.size() > 0);
+    public void correctCredentialsLoggedIn() {
+        User user = new User("paktalin", "234");
+        ResponseEntity responseEntity = restTemplate.postForEntity("/login", user, User.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void wrongCredentialsFailToLogIn() {
+        User user = new User("paktalin", "123");
+        ResponseEntity responseEntity = restTemplate.postForEntity("/login", user, User.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 }
