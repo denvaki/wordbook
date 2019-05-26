@@ -1,5 +1,6 @@
 package com.likorn_devaki.wordbook.controllers;
 
+import com.likorn_devaki.wordbook.JWT.JWTProvider;
 import com.likorn_devaki.wordbook.dto.UserResponse;
 import com.likorn_devaki.wordbook.model.Word;
 import com.likorn_devaki.wordbook.service.WordsService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.likorn_devaki.wordbook.JWT.JWTProvider.extractToken;
 import static com.likorn_devaki.wordbook.JWT.JWTProvider.invalidToken;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,12 +25,17 @@ public class WordController {
 
     @PostMapping(path = "save_word")
     public ResponseEntity<UserResponse> save(@RequestBody Word word, HttpServletRequest request) {
-        return wordsService.save(word, request);
+        Integer userId = getUserId(request);
+        if (userId == null)
+            return responseReLogIn;
+        return wordsService.save(word, userId);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<UserResponse> findOne(@PathVariable Integer id, HttpServletRequest request) {
-        return wordsService.findOne(id, request);
+        if (invalidToken(request))
+            return responseReLogIn;
+        return wordsService.findOne(id);
     }
 
     @GetMapping(path = "words")
@@ -37,12 +44,17 @@ public class WordController {
             @RequestParam(value = "translated_word", required = false) String translatedWord,
             @RequestParam(value = "tag", required = false) String tag,
             HttpServletRequest request) {
-        return wordsService.findAllByUsername(foreignWord, translatedWord, tag, request);
+        Integer userId = getUserId(request);
+        if (userId == null)
+            return responseReLogIn;
+        return wordsService.findAllByUserId(foreignWord, translatedWord, tag, userId);
     }
 
     @PutMapping(path = "update_word")
     public ResponseEntity<UserResponse> update(@RequestBody Word word, HttpServletRequest request) {
-        return wordsService.update(word, request);
+        if (invalidToken(request))
+            return responseReLogIn;
+        return wordsService.update(word);
     }
 
     @PutMapping(path = "add_tag")
@@ -57,6 +69,16 @@ public class WordController {
 
     @DeleteMapping(path = "delete_word")
     public ResponseEntity<UserResponse> delete(@RequestParam(value = "word_id") Integer wordId, HttpServletRequest request) {
-        return wordsService.delete(wordId, request);
+        if (invalidToken(request))
+            return responseReLogIn;
+        return wordsService.delete(wordId);
+    }
+
+    private Integer getUserId(HttpServletRequest request) {
+        try {
+            return JWTProvider.getUserId(extractToken(request));
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 }
