@@ -28,7 +28,6 @@ public class Word {
     @Column(nullable = false)
     private Integer userId;
 
-    //TODO validate foreign_word
     @Column(nullable = false)
     private String foreignWord;
 
