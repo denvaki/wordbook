@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
-public class WordsService {
+public class WordService {
     @Autowired
     private WordsRepository wordsRepository;
 
