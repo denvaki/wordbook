@@ -27,7 +27,7 @@ public class TagService {
         return ResponseEntity.ok().body(UserResponse.builder().message("Tag has been deleted!").build());
     }
 
-    public ResponseEntity findAll(Integer userId){
+    public ResponseEntity<UserResponse> findAll(Integer userId){
         return ResponseEntity.ok().body(UserResponse.builder().tagList(tagsRepository.findAllByUserId(userId)).build());
     }
 }

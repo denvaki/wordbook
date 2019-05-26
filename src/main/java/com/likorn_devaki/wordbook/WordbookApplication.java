@@ -31,7 +31,9 @@ public class WordbookApplication {
 
     private static final List<Tag> SAMPLE_TAGS = Arrays.asList(
             new Tag(1, "numbers"),
-            new Tag(1, "verbs"));
+            new Tag(1, "verbs"),
+            new Tag(2, "food"));
+
 
     public static void main(String[] args) {
         SpringApplication.run(WordbookApplication.class, args);
